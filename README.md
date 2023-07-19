@@ -35,7 +35,8 @@ git checkout {브랜치이름}
 /src/ka/collection/Prg_92341.java
 ```
 
-- `JavaDoc`을 이용해 문제 풀이 시간과 풀이할 때 우선적으로 고려한 사항을 작성해주세요!
+- `JavaDoc`을 이용해 아래 내용을 기입해주세요!
+  - 풀이 시간, 시간, 메모리
 
 > 백준은 main 함수, 프로그래머스는 solution 함수 위에 작성해주세요!
 
@@ -44,7 +45,8 @@ public class Main {
     
     /**
      * 풀이 시간 : 30초
-     * 고려 사항 : 코드 길이
+     * 시간 : 212ms
+     * 메모리: 3567KB
      * */
     public static int solution(int a, int b){
         return a + b;
