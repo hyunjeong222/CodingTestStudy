@@ -31,24 +31,24 @@ public class Boj_25757 {
                 p = player;
             }
         }
-        /*
-        LinkedList<String> list = new LinkedList<>();
-        for (int i = 0; i < n; i++) {
-            String name = br.readLine();
-            if (list.contains(name)) continue;
-            else {
-                list.add(name);
-                p--;
-                if (p == 0) {
-                    count++;
-                    p = player;
-                }
-            }
-        }
-        */
         bw.append(count + "\n");
         bw.flush();
         bw.close();
         br.close();
     }
 }
+/*
+LinkedList<String> list = new LinkedList<>();
+for (int i = 0; i < n; i++) {
+    String name = br.readLine();
+    if (list.contains(name)) continue;
+    else {
+        list.add(name);
+        p--;
+        if (p == 0) {
+            count++;
+            p = player;
+        }
+    }
+}
+*/
