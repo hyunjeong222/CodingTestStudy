@@ -3,6 +3,12 @@ package jung.string;
 import java.io.*;
 import java.util.*;
 
+/**
+ * 문제 이름(난이도) : 임스와 함께하는 미니게임(SIL5)
+ * 시간 : 300ms
+ * 메모리: 27736MB
+ * 링크 : https://www.acmicpc.net/problem/25757
+ * */
 public class Boj_25757 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
