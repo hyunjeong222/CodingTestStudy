@@ -2,6 +2,12 @@ package jung.array;
 
 import java.util.Arrays;
 
+/**
+ * 문제 이름(난이도) : 삼각 달팽이(LV2)
+ * 시간 : 14.03ms
+ * 메모리: 123MB
+ * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/68645
+ * */
 public class Prg_68645 {
     public static void main(String[] args) {
         int n = 4;
