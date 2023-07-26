@@ -44,8 +44,8 @@ public class Boj_17952 {
 }
 
 class Homework {
-    int score;
-    int minute;
+    int score; // 과제의 만점
+    int minute; // 해결하는데 걸리는 시간
     public Homework(int score, int minute) {
         this.score = score;
         this.minute = minute;
