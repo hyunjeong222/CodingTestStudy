@@ -14,9 +14,10 @@ public class Boj_25757 {
 	static Map<String, Integer> playerMap; // 게임 신청 플레이어들
 	
 	/**
-     * 풀이 시간 : 1 초
+	 * 문제 이름(난이도) : 임스와 함께하는 미니게임(SIL5)
      * 시간 : 248ms
      * 메모리: 25312KB
+     * 링크 : https://www.acmicpc.net/problem/25757
      * */
 
 	public static void main(String[] args) throws Exception {
