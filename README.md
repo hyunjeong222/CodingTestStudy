@@ -28,29 +28,29 @@ git checkout {브랜치이름}
 
 ```bash
 # 백준 문자열 문제(27866)일 경우
-/src/ka/string/Boj_27866.java
+/src/ka/string/BOJ_27866.java
 
 # 프로그래머스 컬렉션(List, Set, Queue, Map, Deque, Stack) 문제(92341)일 경우
 # 프로그래머스 문제 번호는 페이지 URL에 있습니다!
-/src/ka/collection/Prg_92341.java
+/src/ka/collection/PRG_92341.java
 ```
 
-- `JavaDoc`을 이용해 아래 내용을 기입해주세요!
-  - 풀이 시간, 시간, 메모리
-
-> 백준은 main 함수, 프로그래머스는 solution 함수 위에 작성해주세요!
+- `JavaDoc`을 이용해 클래스 단에 문제이름(난이도), 시간, 메모리, 링크를 기입해주세요!
+- 프로그래머스 시간, 메모리는 **제출 후 채점하기**를 눌러서 나오는 **가장 마지막 테스트 케이스**를 기준으로 입력해주세요!
 
 ```java
+/**
+ * 문제 이름(난이도) : 두 수의 합(LV0)
+ * 시간 : 0.02ms
+ * 메모리: 77MB
+ * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/120802
+ * */
 public class Main {
     
-    /**
-     * 풀이 시간 : 30초
-     * 시간 : 212ms
-     * 메모리: 3567KB
-     * */
     public static int solution(int a, int b){
         return a + b;
     }
+    
     public static void main(String[] args) {
         System.out.println(solution(1, 2) == 3);
     }
