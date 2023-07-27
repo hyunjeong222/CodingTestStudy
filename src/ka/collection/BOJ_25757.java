@@ -41,12 +41,12 @@ public class BOJ_25757 {
             if (!playedNickname.contains(nickname)) {
                 playedNickname.add(nickname);
                 playerCnt++;
-            }
 
-            // 플레이어 수가 게임 최대 플레이어 수와 동일하면 플레이어 수 초기화 및 게임 진행 횟수 증가
-            if(playerCnt == maxPlayer) {
-                playerCnt = 1;
-                playGameCnt++;
+                // 플레이어 수가 게임 최대 플레이어 수와 동일하면 플레이어 수 초기화 및 게임 진행 횟수 증가
+                if(playerCnt == maxPlayer) {
+                    playerCnt = 1;
+                    playGameCnt++;
+                }
             }
         }
         br.close();
