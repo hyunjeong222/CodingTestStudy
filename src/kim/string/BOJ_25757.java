@@ -1,9 +1,11 @@
+package kim.string;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BOJ_25757 {
     private int getPlayerExceptLms(char c) {
         switch (c) {
             case 'Y': return 1;
@@ -28,6 +30,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        new Main().solution();
+        new BOJ_25757().solution();
     }
 }

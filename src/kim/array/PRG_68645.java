@@ -6,7 +6,7 @@ package kim.array;
  * 메모리: 128MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/68645
  * */
-class Solution {
+class PRG_68645 {
     public int[] solution(int n) {
 
         int[][] triangle = new int[n][n];
