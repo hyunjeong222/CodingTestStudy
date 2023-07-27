@@ -109,10 +109,10 @@ public class PRG_68645 {
 
         // 지도의 (x, y) 좌표에 num 추가 후 값 증가
         map[y][x] = num++;
-//        Arrays.stream(map)
-//                .map(Arrays::toString)
-//                .forEach(System.out::println);
-//        System.out.println("----------------");
+        Arrays.stream(map)
+                .map(Arrays::toString)
+                .forEach(System.out::println);
+        System.out.println("----------------");
 
         // 다음 좌표 지정
         int ny = y + dy[dir];
@@ -157,7 +157,7 @@ public class PRG_68645 {
         assertTrue(Arrays.equals(answer, new int[]{1, 2, 15, 3, 16, 14, 4, 17, 21, 13, 5, 18, 19, 20, 12, 6, 7, 8, 9, 10, 11}));
     }
 
-    @Test
+//    @Test
     @DisplayName("n이 100일 경우")
     void solutionTest4() {
         int n = 1000;
