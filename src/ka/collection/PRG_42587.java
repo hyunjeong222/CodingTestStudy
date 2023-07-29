@@ -1,4 +1,4 @@
-package ka.queue;
+package ka.collection;
 
 import org.junit.jupiter.api.Test;
 
