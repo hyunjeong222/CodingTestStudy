@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # CodingTestStudy
 =======
 # 코딩 테스트 스터디
@@ -84,4 +83,4 @@
     
     git push origin master
     ```
->>>>>>> c10fae621295217a332ace7756daf2ebaf83b542
+
