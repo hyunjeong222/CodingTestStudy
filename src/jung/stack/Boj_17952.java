@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 과제는 끝나지 않아!(SIL3)
  * 시간 : 768ms
- * 메모리: 195548MB
+ * 메모리: 195548KB
  * 링크 : https://www.acmicpc.net/problem/17952
  * */
 public class Boj_17952 {

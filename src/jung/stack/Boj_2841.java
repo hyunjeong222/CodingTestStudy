@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 외계인의 기타 연주(SIL1)
  * 시간 : 772ms
- * 메모리: 122872MB
+ * 메모리: 122872KB
  * 링크 : https://www.acmicpc.net/problem/2841
  * */
 public class Boj_2841 {

@@ -43,5 +43,4 @@ public class Prg_68645 {
         return answer;
     }
 }
-
 // https://minhamina.tistory.com/58
