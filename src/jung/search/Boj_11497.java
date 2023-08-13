@@ -1,4 +1,4 @@
-package src.jung.bruteforce;
+package src.jung.search;
 
 import java.io.*;
 import java.util.*;
