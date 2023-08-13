@@ -11,6 +11,7 @@ import java.util.*;
 public class Prg_1829 {
     static int[] dx = {-1,1,0,0};
     static int[] dy = {0,0,-1,1};
+    // 좌표 저장
     static public class pos {
         int x;
         int y;
@@ -27,20 +28,22 @@ public class Prg_1829 {
     public static int[] solution(int m, int n, int[][] picture) {
         M = m;
         N = n;
+        // 배열 초기화
         map = new int[M][N];
         checked = new boolean[M][N];
+        // 지도 입력
         for (int i = 0; i < M; i ++) {
             for (int j = 0; j < N; j++) {
                 map[i][j] = picture[i][j];
             }
         }
-        int area = 0;
-        int max = 0;
+        int area = 0; // 영역 개수
+        int max = 0; // 가장 큰 영역
         for (int i = 0; i < M; i ++) {
             for (int j = 0; j < N; j++) {
                 if (map[i][j] != 0 && !checked[i][j]) {
-                    area++;
-                    max = Math.max(max, bfs(i, j));
+                    area++; // 영역 개수 증가
+                    max = Math.max(max, bfs(i, j)); // 가장 큰 영역 비교
                 }
             }
         }
@@ -54,14 +57,14 @@ public class Prg_1829 {
         Queue<pos> queue = new LinkedList<pos>();
         queue.offer(new pos(x, y));
         checked[x][y] = true;
-        count = 1;
+        count = 1; // 지나온 칸의 개수
         while (!queue.isEmpty()) {
             pos p_q = queue.poll();
             for (int i = 0; i < 4; i++) {
                 int nx = p_q.x + dx[i];
                 int ny = p_q.y + dy[i];
                 if (nx < M && nx >= 0 && ny < N && ny >= 0) {
-                    if (map[nx][ny] == map[x][y] && !checked[nx][ny]) {
+                    if (map[nx][ny] == map[x][y] && !checked[nx][ny]) { // 같은 영역이라면
                         queue.offer(new pos(nx, ny));
                         checked[nx][ny] = true;
                         count++;
