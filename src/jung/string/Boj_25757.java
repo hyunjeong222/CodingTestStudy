@@ -13,6 +13,7 @@ public class Boj_25757 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken()); // 사람들이 임스와 같이 플레이하기를 신청한 횟수
         String g = st.nextToken(); // 플레이할 게임의 종류
