@@ -5,8 +5,8 @@ import java.util.*;
 
 /**
  * 문제 이름(난이도) : 안전 영역(SIL1)
- * 시간 : 264ms
- * 메모리: 19496KB
+ * 시간 : 264ms, 228ms
+ * 메모리: 19496KB, 16864KB
  * 링크 : https://www.acmicpc.net/problem/2468
  * */
 public class Boj_2468 {
