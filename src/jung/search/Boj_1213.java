@@ -4,8 +4,8 @@ import java.io.*;
 
 /**
  * 문제 이름(난이도) : 팰린드롬 만들기(SIL3)
- * 시간 : 128ms
- * 메모리: 14192KB
+ * 시간 : 128ms(Java11) / 80ms(Java8)
+ * 메모리: 14192KB / 11504KB
  * 링크 : https://www.acmicpc.net/problem/1213
  * */
 public class Boj_1213 {
@@ -16,7 +16,7 @@ public class Boj_1213 {
 
         int[] alpha = new int[26]; // 알파벳 26개
         for (int i = 0; i < s.length(); i++) {
-            alpha[s.charAt(i)-'A']++; // 문자열 알파벳의 수 저장
+            alpha[s.charAt(i)-65]++; // 문자열 알파벳의 수 저장
         }
 
         // 홀수 개수 체크
@@ -45,7 +45,7 @@ public class Boj_1213 {
                 }
             }
             if (oddInx != -1) { // 홀수가 있다면 중간에 위치
-                sb1.append((char)(oddInx + 'A'));
+                sb1.append((char)(oddInx + 65));
             }
             sb2.reverse();
             sb1.append(sb2.toString());
