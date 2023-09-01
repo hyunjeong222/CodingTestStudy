@@ -5,8 +5,8 @@ import java.util.*;
 
 /**
  * 문제 이름(난이도) : 물통(GOL5)
- * 시간 : 144ms
- * 메모리: 14688KB
+ * 시간 : 144ms, 80ms
+ * 메모리: 14688KB, 11792KB
  * 링크 : https://www.acmicpc.net/problem/2251
  * */
 public class Boj_2251 {
