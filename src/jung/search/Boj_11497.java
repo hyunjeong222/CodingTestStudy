@@ -5,8 +5,8 @@ import java.util.*;
 
 /**
  * 문제 이름(난이도) : 통나무 건너뛰기(SIL1)
- * 시간 : 540ms
- * 메모리: 46644KB
+ * 시간 : 540ms, 424ms
+ * 메모리: 46644KB, 48496KB
  * 링크 : https://www.acmicpc.net/problem/11497
  * */
 public class Boj_11497 {
@@ -31,6 +31,7 @@ public class Boj_11497 {
             int right = n-1;
 
             // 왼쪽 오른쪽에 하나씩 정렬된 통나무 놓아 가장 작은 차이 만들기
+            // 1 3 5 4 2
             for (int i = 0; i < n; i++) {
                 if (i % 2 == 0) {
                     tmp[right--] = arr[i];
@@ -39,6 +40,7 @@ public class Boj_11497 {
                 }
             }
             // 처음과 끝 통나무 크기 비교
+            // 처음과 끝 통나무도 인접
             int max = Math.abs(tmp[0]-tmp[n-1]);
             // 인접한 통나무와 크기비교 해 max 값 바꿔주기
             for (int j = 1; j < n; j++) {
