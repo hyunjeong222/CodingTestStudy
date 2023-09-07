@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
  * 시간 : 288ms
  * 메모리: 31712KB
  * 링크 : https://www.acmicpc.net/problem/2470
- */
+ * */
 public class Boj_2470 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

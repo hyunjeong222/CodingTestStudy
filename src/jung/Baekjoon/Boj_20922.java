@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * 시간 : 300ms
  * 메모리 : 37668KB
  * 링크 : https://www.acmicpc.net/problem/20922
- */
+ * */
 public class Boj_20922 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

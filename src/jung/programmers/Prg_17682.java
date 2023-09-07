@@ -3,9 +3,9 @@ package src.jung.programmers;
 /**
  * 문제 이름(난이도) : [1차] 다트 게임(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/17682
- */
+ * */
 public class Prg_17682 {
     public static void main(String[] args) {
         String dartResult = "1D2S#10S";

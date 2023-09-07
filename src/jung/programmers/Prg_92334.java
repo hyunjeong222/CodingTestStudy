@@ -7,9 +7,9 @@ import java.util.HashSet;
 /**
  * 문제 이름(난이도) : 신고 결과 받기(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/92334
- */
+ * */
 public class Prg_92334 {
     public static void main(String[] args) {
         String[] id_list = {"muzi", "frodo", "apeach", "neo"};

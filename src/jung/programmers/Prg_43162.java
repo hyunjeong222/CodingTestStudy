@@ -7,7 +7,7 @@ import java.util.Arrays;
  * 시간 : 0.29ms
  * 메모리 : 81.4MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/43162
- */
+ * */
 public class Prg_43162 {
     public static void main(String[] args) {
         int n = 3;

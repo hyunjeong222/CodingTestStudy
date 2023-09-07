@@ -5,9 +5,9 @@ import java.util.Arrays;
 /**
  * 문제 이름(난이도) : 로또의 최고 순위와 최저 순위(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/77484
- */
+ * */
 public class Prg_77484 {
     public static void main(String[] args) {
         int[] lottos = {44, 1, 0, 0, 31, 25};

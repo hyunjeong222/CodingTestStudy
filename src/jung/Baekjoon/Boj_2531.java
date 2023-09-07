@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
  * 시간 : 144ms
  * 메모리: 16424KB
  * 링크 : https://www.acmicpc.net/problem/2531
- */
+ * */
 public class Boj_2531 {
     // 주어진 회전 초밥 벨트에서 먹을 수 있는 초밥의 가짓수의 최댓값
     static int n, d, k, c;

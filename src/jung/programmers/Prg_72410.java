@@ -3,9 +3,9 @@ package src.jung.programmers;
 /**
  * 문제 이름(난이도) : 신규 아이디 추천(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/72410
- */
+ * */
 public class Prg_72410 {
     public static void main(String[] args) {
         String new_id = "...!@BaT#*..y.abcdefghijklm";

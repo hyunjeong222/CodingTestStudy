@@ -7,9 +7,9 @@ import java.util.Queue;
 /**
  * 문제 이름(난이도) : 카카오프렌즈 컬러링북(LV2)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/1829
- */
+ * */
 public class Prg_1829 {
     public static void main(String[] args) {
         int m = 6;

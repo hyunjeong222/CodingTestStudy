@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
  * 시간 : 176ms
  * 메모리 : 55116KB
  * 링크 :https://www.acmicpc.net/problem/5014
- */
+ * */
 public class Boj_5014 {
     static int f, s, g, u, d;
     static int[] checked;

@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 괄호(SIL4)
  * 시간 : 128ms
- * 메모리: 14348KB
+ * 메모리 : 14348KB
  * 링크 : https://www.acmicpc.net/problem/9012
  * */
 public class Boj_9012 {

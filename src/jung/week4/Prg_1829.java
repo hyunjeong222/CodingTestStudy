@@ -6,10 +6,10 @@ import java.util.*;
  * 문제 이름(난이도) : 카카오프렌즈 컬러링북(LV2)
  * bfs
  * 시간 : 17.02ms
- * 메모리: 94.9MB
+ * 메모리 : 94.9MB
  * dfs
  * 시간 : 8.73ms
- * 메모리: 91.1MB
+ * 메모리 : 91.1MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/1829
  * */
 public class Prg_1829 {

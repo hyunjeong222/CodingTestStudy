@@ -7,17 +7,10 @@ import java.util.StringTokenizer;
 /**
  * 문제 이름(난이도) : 회전 초밥(GOL4)
  * 시간 : 528ms
- * 메모리: 168732KB
+ * 메모리 : 168732KB
  * 링크 : https://www.acmicpc.net/problem/15961
  * */
 public class Boj_15961 {
-    // 초밥의 종류를 번호로 표현
-    // 1. 벨트의 임의의 한 위치부터 k개의 접시를 연속해서 먹을 경우 할인된 정액 가격으로 제공
-    // 2. 각 고객에게 초밥의 종류 하나가 쓰인 쿠폰을 발행,
-    //    1번 행사에 참가할 경우 이 쿠폰에 적혀진 종류의 초밥 하나를 추가로 무료로 제공
-    //    만약 이 번호에 적혀진 초밥이 현재 벨트 위에 없을 경우, 요리사가 새로 만들어 손님에게 제공
-    // 회전 초밥 음식점의 벨트 상태, 메뉴에 있는 초밥의 가짓수, 연속해서 먹는 접시의 개수, 쿠폰 번호가 주어졌을 때,
-    // 손님이 먹을 수 있는 초밥 가짓수의 최댓값을 구하는 프로그램을 작성
     static int n, d, k, c, sushi[], eaten[];
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

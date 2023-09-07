@@ -5,9 +5,9 @@ import java.util.Stack;
 /**
  * 문제 이름(난이도) : 크레인 인형뽑기 게임(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/64061
- */
+ * */
 public class Prg_64061 {
     public static void main(String[] args) {
         int[][] board = {{0,0,0,0,0},{0,0,1,0,3},{0,2,5,0,1},{4,2,4,4,2},{3,5,1,3,1}}; // 게임화면

@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * 문제 이름(난이도) : 팰린드롬 만들기(SIL3)
  * 시간 : 128ms(Java11) / 80ms(Java8)
- * 메모리: 14192KB / 11504KB
+ * 메모리 : 14192KB / 11504KB
  * 링크 : https://www.acmicpc.net/problem/1213
  * */
 public class Boj_1213 {

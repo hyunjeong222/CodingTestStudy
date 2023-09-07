@@ -3,9 +3,9 @@ package src.jung.programmers;
 /**
  * 문제 이름(난이도) : 옹알이 (2)(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/133499
- */
+ * */
 public class Prg_133499 {
     public static void main(String[] args) {
         String[] babbling = {"aya", "yee", "u", "maa"};

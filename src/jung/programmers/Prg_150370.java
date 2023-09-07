@@ -7,9 +7,9 @@ import java.util.HashMap;
 /**
  * 문제 이름(난이도) : 개인정보 수집 유효기간(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/150370
- */
+ * */
 public class Prg_150370 {
     public static void main(String[] args) {
         String today = "2022.05.19";

@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 프로세스(LV2)
  * 시간 : 0.48ms
- * 메모리: 78.1MB
+ * 메모리 : 78.1MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/42587
  * */
 public class Prg_42587 {

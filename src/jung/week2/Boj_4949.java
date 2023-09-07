@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 균형잡힌 세상(SIL4)
  * 시간 : 252ms
- * 메모리: 19616KB
+ * 메모리 : 19616KB
  * 링크 : https://www.acmicpc.net/problem/4949
  * */
 public class Boj_4949 {

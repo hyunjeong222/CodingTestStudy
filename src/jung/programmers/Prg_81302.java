@@ -7,9 +7,9 @@ import java.util.Queue;
 /**
  * 문제 이름(난이도) : 거리두기 확인하기(LV2)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/81302
- */
+ * */
 public class Prg_81302 {
     public static void main(String[] args) {
         String[][] places = {{"POOOP", "OXXOX", "OPXPX", "OOXOX", "POXXP"},

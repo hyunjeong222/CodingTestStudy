@@ -5,9 +5,9 @@ import java.util.Stack;
 /**
  * 문제 이름(난이도) : 햄버거 만들기(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/133502
- */
+ * */
 public class Prg_133502 {
     public static void main(String[] args) {
         int[] ingredient = {2, 1, 1, 2, 3, 1, 2, 3, 1};

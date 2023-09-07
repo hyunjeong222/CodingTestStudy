@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 숫자 야구(SIL3)
  * 시간 : 168ms,100ms
- * 메모리: 18032KB, 14308KB
+ * 메모리 : 18032KB, 14308KB
  * 링크 : https://www.acmicpc.net/problem/2503
  * */
 public class Boj_2503 {

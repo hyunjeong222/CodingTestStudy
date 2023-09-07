@@ -6,13 +6,10 @@ import java.util.StringTokenizer;
 /**
  * 문제 이름(난이도) : 블로그(SIL3)
  * 시간 : 308ms
- * 메모리: 38940KB
+ * 메모리 : 38940KB
  * 링크 : https://www.acmicpc.net/problem/21921
  * */
 public class Boj_21921 {
-    // 블로그를 시작하고 지난 일수 n
-    // x일 동안 가장 많이 들어온 방문자 수와 기간이 몇 개 있는지
-    // 만약 최대 방문자 수가 0명이라면 SAD를 출력
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));

@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 통나무 건너뛰기(SIL1)
  * 시간 : 540ms, 424ms
- * 메모리: 46644KB, 48496KB
+ * 메모리 : 46644KB, 48496KB
  * 링크 : https://www.acmicpc.net/problem/11497
  * */
 public class Boj_11497 {

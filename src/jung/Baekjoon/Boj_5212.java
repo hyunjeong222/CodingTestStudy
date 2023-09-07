@@ -5,7 +5,7 @@ package src.jung.Baekjoon;
  * 시간 : ms
  * 메모리 : KB
  * 링크 : https://www.acmicpc.net/problem/5212
- */
+ * */
 public class Boj_5212 {
     public static void main(String[] args) {
 

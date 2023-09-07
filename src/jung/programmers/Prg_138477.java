@@ -7,9 +7,9 @@ import java.util.Collections;
 /**
  * 문제 이름(난이도) : 명예의 전당 (1)(LV1)
  * 시간 : ms
- * 메모리 : KB
+ * 메모리 : MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/138477
- */
+ * */
 public class Prg_138477 {
     public static void main(String[] args) {
         int k = 4;

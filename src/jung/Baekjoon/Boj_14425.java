@@ -8,7 +8,7 @@ import java.util.*;
  * 시간 : 336ms
  * 메모리 : 39092KB
  * 링크 : https://www.acmicpc.net/problem/14425
- */
+ * */
 public class Boj_14425 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

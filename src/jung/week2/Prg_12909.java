@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 문제 이름(난이도) : 올바른 괄호(LV2)
  * 시간 : 20.43ms
- * 메모리: 52.5MB
+ * 메모리 : 52.5MB
  * 링크 : https://school.programmers.co.kr/learn/courses/30/lessons/12909
  * */
 public class Prg_12909 {
