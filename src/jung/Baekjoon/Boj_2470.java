@@ -11,11 +11,6 @@ import java.util.StringTokenizer;
  * 링크 : https://www.acmicpc.net/problem/2470
  */
 public class Boj_2470 {
-    // 산성 용액의 특성값 양수
-    // 알칼리성 용액의 특성값 음수
-    // 같은 양의 두 용액을 혼합하여 특성값이 0에 가장 가까운 용액을 만들려고 함
-    // 같은 용액만으로 특성값 0에 가까운 혼합 용액을 만드는 경우도 존재
-    // 두 개의 서로 다른 용액을 혼합하여 특성값이 0에 가장 가까운 용액을 만들어내는 두 용액을 찾기
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
