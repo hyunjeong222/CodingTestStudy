@@ -7,7 +7,6 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
@@ -17,9 +16,7 @@ public class Main {
 
         dfs(0);
 
-        bw.append(sb);
-        bw.flush();
-        bw.close();
+        System.out.println(sb);
         br.close();
     }
 
