@@ -41,6 +41,7 @@ public class Boj_16434 {
                 hCurHp = Math.max(hCurHp - hp, 0); // 받은 데미지 - 포션 = 회복하고 나서의 데미지, 0 이하만 안되게
             }
         }
+
         hMaxHp++;
         bw.append(hMaxHp + "\n");
         bw.flush();
