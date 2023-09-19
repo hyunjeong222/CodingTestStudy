@@ -12,9 +12,9 @@ public class Main {
         n = Integer.parseInt(st.nextToken()); // 웹페이지의 종류의 수
         q = Integer.parseInt(st.nextToken()); // 사용자가 수행하는 작업의 개수
 
-        List<Integer> back = new LinkedList<>(); // 뒤로 가기 공간
-        List<Integer> front = new LinkedList<>(); // 앞으로 가기 공간
-        List<Integer> tmp = new LinkedList<>();
+        Deque<Integer> back = new LinkedList<>();
+        Deque<Integer> front = new LinkedList<>();
+        Deque<Integer> tmp;
 
         int cur = 0; // 현재 페이지
 
@@ -22,56 +22,58 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             String s = st.nextToken();
 
-            if (s.equals("B")) { // 뒤로 가기
-                if (back.size() != 0) {
-                    front.add(0, cur);
-                    cur = back.remove(back.size()-1);
-                }
-            } else if (s.equals("F")) { // 앞으로 가기
-                if (front.size() != 0) {
-                    back.add(cur);
-                    cur = front.remove(0);
-                }
-            } else if (s.equals("C")) { // 압축
-                if (back.size() == 0) continue;
-                tmp = new LinkedList<>();
-                tmp.add(back.get(0));
-                
-                for (int i = 1; i < back.size(); i++) {
-                    if (!tmp.get(tmp.size()-1).equals(back.get(i))) {
-                        tmp.add(back.get(i));
+            switch (s) {
+                case "B" :
+                    if (back.isEmpty()) break;
+                    front.offerFirst(cur);
+                    cur = back.pollFirst();
+                    break;
+                case "F" :
+                    if (!front.isEmpty()) {
+                        back.offerFirst(cur);
+                        cur = front.pollFirst();
                     }
-                }
-                back = tmp;
-            } else { // 웹 페이지 접속
-                int i = Integer.parseInt(st.nextToken());
-                front.clear();
-                if (cur != 0) {
-                    back.add(cur);
-                }
-                cur = i;
+                    break;
+                case "A" :
+                    int p = Integer.parseInt(st.nextToken());
+                    front.clear();
+                    if (cur != 0) {
+                        back.offerFirst(cur);
+                    }
+                    cur = p;
+                    break;
+                case "C" :
+                    if (back.isEmpty()) continue;
+                    tmp = new LinkedList<>();
+                    int prev = back.pollFirst();
+                    tmp.add(prev);
+
+                    for (int next : back) {
+                        if (next != prev) {
+                            tmp.add(next);
+                            prev = next;
+                        }
+                    }
+                    back = tmp;
+                    break;
             }
         }
-        sb.append(cur + "\n");
-        if (back.size() == 0) {
-            sb.append(-1);
-        } else {
-            for (int i = back.size()-1; i >= 0; i--) {
-                sb.append(back.get(i) + " ");
-            }
-        }
-        sb.append("\n");
-        if (front.size() == 0) {
-            sb.append(-1);
-        } else {
-            for (int i = 0; i < front.size(); i++) {
-                sb.append(front.get(i) + " ");
-            }
-        }
+
+        sb.append(cur).append("\n");
+        getPage(sb, back);
+        getPage(sb, front);
 
         bw.append(sb);
         bw.flush();
         bw.close();
         br.close();
+    }
+
+    private static void getPage(StringBuilder sb, Deque<Integer> q) {
+        if(q.isEmpty()) sb.append(-1);
+        else {
+            while(!q.isEmpty()) sb.append(q.pollFirst()).append(" ");
+        }
+        sb.append("\n");
     }
 }
