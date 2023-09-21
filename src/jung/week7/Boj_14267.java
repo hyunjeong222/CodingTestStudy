@@ -68,7 +68,7 @@ public class Boj_14267 {
     */
 
     static int n, m;
-    static int[] count, parent;
+    static int[] parent, count;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -78,6 +78,8 @@ public class Boj_14267 {
         n = Integer.parseInt(st.nextToken()); // 회사의 직원수
         m = Integer.parseInt(st.nextToken()); // 최초의 칭찬 횟수
 
+        // 직원 번호 입력받기
+        // 1번이 사장 -> -1입력
         st = new StringTokenizer(br.readLine());
         parent = new int[n+1];
         for (int i = 1; i <= n; i++) {
@@ -85,6 +87,7 @@ public class Boj_14267 {
         }
         // System.out.println(Arrays.toString(parent)); [0, -1, 1, 2, 3, 4]
 
+        // 직원 번호에 따른 누적 칭찬 수치
         count = new int[n+1];
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
@@ -95,10 +98,12 @@ public class Boj_14267 {
         }
         // System.out.println(Arrays.toString(count)); [0, 0, 2, 4, 0, 6]
 
+        // 사장은 칭찬 안받음
+        // 본인의 칭찬 누적치를 바로 아래 부하 직원 칭찬 누적치에 누적
         for (int i = 2; i <= n; i++) {
             count[i] += count[parent[i]];
         }
-        // System.out.println(Arrays.toString(count)); [0, 0, 2, 4, 0, 6]
+        // System.out.println(Arrays.toString(count)); [0, 0, 2, 6, 6, 12]
         for (int i = 1; i <= n; i++) {
             bw.append(count[i] + " ");
         }
