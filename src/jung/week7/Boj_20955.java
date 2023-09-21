@@ -47,6 +47,7 @@ public class Boj_20955 {
     }
 
     private static boolean union(int u, int v) {
+        // 부모 노드 찾기
         u = find(u);
         v = find(v);
 
@@ -59,7 +60,7 @@ public class Boj_20955 {
     }
 
     private static int find(int u) {
-        if (parents[u] == u) return u;
-        return parents[u] = find(parents[u]);
+        if (parents[u] == u) return u; // 두 노드가 같다면 해당 노드는 부모노드
+        return parents[u] = find(parents[u]); // 아니라면 find 연산 재귀호출
     }
 }
