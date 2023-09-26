@@ -1,73 +1,66 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int k,v,e;
-	static int p1,p2;
-	static ArrayList<Integer>[] list;
-	static int[] vidited;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		k = Integer.parseInt(br.readLine());
-		StringTokenizer st;
-		for (int i = 0; i < k; i++) {
-			st = new StringTokenizer(br.readLine());
-			v = Integer.parseInt(st.nextToken());
-			e = Integer.parseInt(st.nextToken());
-			
-			vidited = new int[v+1];
-			list = new ArrayList[v+1];
-			
-			for (int j = 0; j < v+1; j++) {
-				list[j] = new ArrayList<Integer>();
-			}
-			
-			for (int j = 0; j < e; j++) {
-				st = new StringTokenizer(br.readLine());
-				p1 = Integer.parseInt(st.nextToken());
-				p2 = Integer.parseInt(st.nextToken());
-				
-				list[p1].add(p2);
-				list[p2].add(p1);
-			}
-			bfs();
-		}
-	}
-	
-	private static void bfs() {
-		Queue<Integer> q = new LinkedList<Integer>();
-		for (int i = 1; i < v+1; i++) {
-			if (vidited[i] == 0) {
-				q.offer(i);
-				vidited[i] = 1;
-			}
-			
-			while (!q.isEmpty()) {
-				int now = q.poll();
-				
-				for (int j = 0; j < list[now].size(); j++) {
-					if (vidited[list[now].get(j)] == 0) {
-						q.offer(list[now].get(j));
-					}
-					
-					if (vidited[list[now].get(j)] == vidited[now]) {
-						System.out.println("NO");
-						return;
-					}
-					
-					if (vidited[now] == 1 && vidited[list[now].get(j)] == 0) {
-						vidited[list[now].get(j)] = 2;
-					} else if (vidited[now] == 2 && vidited[list[now].get(j)] == 0) {
-						vidited[list[now].get(j)] = 1;
-					}
-				}
-			}
-		}
-		System.out.println("YES");
-	}
+    static int t, n, m;
+    static int u, v;
+    static ArrayList<Integer>[] list;
+    static int[] checked;
+    static boolean flag;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        t = Integer.parseInt(br.readLine()); // 테스트 케이스 개수
+        StringTokenizer st;
+        while (t-- > 0) {
+            st = new StringTokenizer(br.readLine());
+
+            n = Integer.parseInt(st.nextToken()); // 정점의 개수
+            m = Integer.parseInt(st.nextToken()); // 간선의 개수
+
+            checked = new int[n + 1];
+            flag = true; // 이분 그래프면 true, 아니면 false
+
+            list = new ArrayList[n + 1];
+            for (int i = 0; i <= n; i++) {
+                list[i] = new ArrayList<>();
+            }
+
+            for (int i = 0; i < m; i++) {
+                st = new StringTokenizer(br.readLine());
+
+                // 정점의 정보
+                u = Integer.parseInt(st.nextToken());
+                v = Integer.parseInt(st.nextToken());
+
+                list[u].add(v);
+                list[v].add(u);
+            }
+
+            for (int i = 1; i <= n; i++) {
+                if (checked[i] == 0) dfs(i, 1); // 시작 노드, 색 정보
+                if (!flag) break; // 이분 그래프가 아니라면 탐색 종료
+            }
+            
+            bw.append(flag ? "YES" + "\n" : "NO" + "\n");
+        }
+        bw.flush();
+        bw.close();
+        br.close();
+    }
+
+
+    private static void dfs(int start, int color) {
+        checked[start] = color;
+        for (int next : list[start]) {
+            if (checked[next] == color) { // 같은 색이라면
+                flag = false; // 이분 그래프 아님
+                return;
+            }
+            if (checked[next] == 0) { // 방문하지 않은 노드라면
+                dfs(next, color*-1); // 1과 -1로 정점 색을 구별
+            }
+        }
+    }
 }
