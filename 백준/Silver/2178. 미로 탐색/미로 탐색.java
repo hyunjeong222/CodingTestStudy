@@ -1,73 +1,65 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	static boolean[][] visited;
-	static int[][] map;
-	
-	static int[] dx = {-1,1,0,0};
-	static int[] dy = {0,0,-1,1};
-	
-	static public class dot {
-		int x;
-		int y;
-		public dot(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
-	
-	static int N;
-	static int M;
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		
-		visited = new boolean[N][M];
-		map = new int[N][M];
-		
-		for (int i = 0; i < N; i++) {
-			String str = br.readLine();
-			for (int j = 0; j < M; j++) {
-				map[i][j] = str.charAt(j) - '0';
-			}
-		}
-		br.close();
-		
-		bfs(0,0);
-		System.out.print(map[N-1][M-1]);
-		
-	}
+    static int n, m;
+    static int[][] map;
+    static boolean[][] checked;
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
+    static public class pos {
+        int x;
+        int y;
+        public pos(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-	private static void bfs(int x, int y) {
-		Queue<dot> queue = new LinkedList<dot>();
-		queue.offer(new dot(x, y));
-		visited[x][y] = true;
-		while (!queue.isEmpty()) {
-			dot d_q = queue.poll();
-			for (int i = 0; i < 4; i++) {
-				int nx = d_q.x + dx[i]; 
-				int ny = d_q.y + dy[i];
-                
-				if(nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
-				
-				if(visited[nx][ny] || map[nx][ny] == 0) continue;
-                
-				if(map[nx][ny] == 1 && !visited[nx][ny]) {
-					visited[nx][ny] = true;
-					queue.offer(new dot(nx,ny));
-					map[nx][ny] = map[d_q.x][d_q.y] + 1;
-				}
-			}
-		}
-	}
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
 
+        map = new int[n][m];
+        checked = new boolean[n][m];
+
+        for (int i = 0; i < n; i++) {
+            String s = br.readLine();
+            for (int j = 0; j < m; j++) {
+                map[i][j] = s.charAt(j) - '0';
+            }
+        }
+
+        bfs(0, 0);
+        bw.append(map[n-1][m-1] + "\n");
+        bw.flush();
+        bw.close();
+        br.close();
+    }
+
+    private static void bfs(int x, int y) {
+        Queue<pos> que = new LinkedList<>();
+        que.offer(new pos(x, y));
+        checked[x][y] = true;
+
+        while (!que.isEmpty()) {
+            pos now = que.poll();
+
+            for (int i = 0; i < 4; i++) {
+                int nx = now.x + dx[i];
+                int ny = now.y + dy[i];
+
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && !checked[nx][ny] && map[nx][ny] == 1) {
+                    checked[nx][ny] = true;
+                    que.offer(new pos(nx, ny));
+                    map[nx][ny] = map[now.x][now.y] + 1;
+                }
+            }
+        }
+    }
 }
