@@ -1,91 +1,74 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int[][][] map;
-	
-	static int M;
-	static int N;
-	static int H;
-	
-	static int[] dx = {-1,0,1,0,0,0};
-	static int[] dy = {0,-1,0,1,0,0};
-	static int[] dz = {0,0,0,0,-1,1};
-	
-	static public class dot {
-		int z;
-		int x;
-		int y;
-		
-		public dot(int z, int x, int y) {
-			this.z = z;
-			this.x = x;
-			this.y = y;
-		}
-	}
-	
-	static int max;
-	static Queue<dot> q;
-	
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		M = Integer.parseInt(st.nextToken());
-		N = Integer.parseInt(st.nextToken());
-		H = Integer.parseInt(st.nextToken());
-		
-		map = new int[H][N][M];
-		
-		q = new LinkedList<dot>();
-		
-		for (int i = 0; i < H; i++) {
-			for (int j = 0; j < N; j++) {
-				st = new StringTokenizer(br.readLine());
-				for (int k = 0; k < M; k++) {
-					map[i][j][k] = Integer.parseInt(st.nextToken());
-					if (map[i][j][k] == 1) {
-						q.offer(new dot(i, j, k));
-					}
-				}
-			}
-		}
-		bfs();
-	}
-	
-	private static void bfs() {
-		while (!q.isEmpty()) {
-			dot d_q = q.poll();
-			
-			for (int k = 0; k < 6; k++) {
-				int nx = d_q.x + dx[k];
-				int ny = d_q.y + dy[k];
-				int nz = d_q.z + dz[k];
-				
-				if (nx < 0 || ny < 0 || nz < 0 || nx >= N || ny >= M || nz >= H) continue;
-				
-				if (map[nz][nx][ny] != 0) continue;
-				
-				map[nz][nx][ny] = map[d_q.z][d_q.x][d_q.y] + 1;
-				q.offer(new dot(nz, nx, ny));
-			}
-		}
-		
-		for (int i = 0; i < H; i++) {
-			for (int j = 0; j < N; j++) {
-				for (int k = 0; k < M; k++) {
-					if (map[i][j][k] == 0) {
-						System.out.println(-1);
-						return;
-					}
-					max = Math.max(max, map[i][j][k]);
-				}
-			}
-		}
-		System.out.println(max-1);
-	}
+    static int[] dx = {-1, 0, 1, 0, 0, 0};
+    static int[] dy = {0, -1, 0, 1, 0, 0};
+    static int[] dz = {0, 0, 0, 0, -1, 1};
+    static public class pos {
+        int z; int x; int y;
+        public pos(int z, int x, int y) {
+            this.z = z; this.x = x; this.y = y;
+        }
+    }
+    static int m, n, h;
+    static int[][][] map;
+    static int day;
+    static Queue<pos> que;
+    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        m = Integer.parseInt(st.nextToken()); // 가로
+        n = Integer.parseInt(st.nextToken()); // 세로
+        h = Integer.parseInt(st.nextToken()); // 높이
+        map = new int[h][n][m];
+        que = new LinkedList<>();
+        for (int k = 0; k < h; k++) {
+            for (int i = 0; i < n; i++) {
+                st = new StringTokenizer(br.readLine());
+                for (int j = 0; j < m; j++) {
+                    map[k][i][j] = Integer.parseInt(st.nextToken());
+                    if (map[k][i][j] == 1) que.offer(new pos(k, i, j));
+                }
+            }
+        }
+        bfs();
+        bw.close();
+        br.close();
+    }
+
+    private static void bfs() throws IOException {
+        while (!que.isEmpty()) {
+            pos now = que.poll();
+
+            for (int d = 0; d < 6; d++) {
+                int nz = now.z + dz[d];
+                int nx = now.x + dx[d];
+                int ny = now.y + dy[d];
+
+                if (nz >= 0 && nz < h && nx >= 0 && nx < n && ny >= 0 && ny < m && map[nz][nx][ny] == 0) {
+                    map[nz][nx][ny] = map[now.z][now.x][now.y] + 1;
+                    que.offer(new pos(nz, nx, ny));
+                }
+            }
+        }
+
+        for (int k = 0; k < h; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if (map[k][i][j] == 0) {
+                        bw.append(-1 + "\n");
+                        return;
+                    }
+                    day = Math.max(day, map[k][i][j]);
+                }
+            }
+        }
+        bw.append(day-1 + "\n");
+        bw.flush();
+    }
 }
