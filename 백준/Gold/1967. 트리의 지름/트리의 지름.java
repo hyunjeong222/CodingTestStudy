@@ -6,7 +6,7 @@ public class Main {
     static int n;
     static ArrayList<Node>[] list;
     static boolean[] checked;
-    static int ans;
+    static int max, maxIdx;
     static public class Node {
         int num; int value; // 노드의 번호, 가중치
         public Node (int num, int value) {
@@ -15,6 +15,7 @@ public class Main {
     }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st;
         n = Integer.parseInt(br.readLine()); // 노드의 개수
         list = new ArrayList[n+1];
@@ -32,18 +33,27 @@ public class Main {
             list[b].add(new Node(a, v));
         }
 
-        ans = 0; // 트리의 지름
-        for (int i = 1; i <= n; i++) {
-            checked = new boolean[n+1];
-            checked[i] = true;
-            dfs(i, 0);
-        }
+        // 가장 큰 가중치를 가진 노드 구하기
+        checked = new boolean[n+1];
+        checked[1] = true;
+        dfs(1, 0);
 
-        System.out.println(ans);
+        // 가장 큰 가중치를 가진 노드를 기준으로 거리 구하기
+        checked = new boolean[n+1];
+        checked[maxIdx] = true;
+        dfs(maxIdx, 0);
+
+        bw.append(max + "\n");
+        bw.flush();
+        bw.close();
+        br.close();
     }
 
-    private static void dfs(int num, int dist) {
-        if (ans < dist) ans = dist; // 최대 지름 갱신
+    private static void dfs(int num, int dist) { // 노드, 지름
+        if (max < dist) {
+            max = dist; // 최대 지름 갱신
+            maxIdx = num; // 가장 큰 가중치를 가진 노드
+        }
 
         for (Node node : list[num]) {
             if (!checked[node.num]) {
