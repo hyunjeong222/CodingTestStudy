@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -9,25 +8,23 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int m = Integer.parseInt(st.nextToken());
         int n = Integer.parseInt(st.nextToken());
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = m; i <= n; i++) {
-            if (isPrime(i)) {
-                list.add(i);
+
+        boolean[] checked = new boolean[n+1];
+        checked[0] = checked[1] = true;
+        
+        for (int i = 2; i <= Math.sqrt(n+1); i++) {
+            if (checked[i]) continue;
+            for (int j = i * i; j < checked.length; j += i) {
+                checked[j] = true;
             }
         }
-        for (int i = 0; i < list.size(); i++) {
-            bw.append(list.get(i) + "\n");
+        for (int i = m; i <= n; i++) {
+            if (!checked[i]) {
+                bw.append(i + "\n");
+            }
         }
         bw.flush();
         bw.close();
         br.close();
-    }
-
-    private static boolean isPrime(int num) {
-        if (num < 2) return false;
-        for (int i = 2; i <= Math.sqrt(num); i++) {
-            if (num % i == 0) return false;
-        }
-        return true;
     }
 }
