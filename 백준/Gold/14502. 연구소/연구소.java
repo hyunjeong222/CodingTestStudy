@@ -45,7 +45,7 @@ public class Main {
             return;
         }
 
-        for (int i = 0; i < n*m; i++) {
+        for (int i = start; i < n*m; i++) {
             int x = i / m;
             int y = i % m;
 
