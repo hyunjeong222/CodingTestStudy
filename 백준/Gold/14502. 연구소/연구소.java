@@ -32,26 +32,27 @@ public class Main {
             }
         }
         
-        dfs(0);
+        dfs(0, 0);
         bw.append(ans + "\n");
         bw.flush();
         bw.close();
         br.close();
     }
 
-    private static void dfs(int depth) {
+    private static void dfs(int start, int depth) {
         if (depth == 3) {
             bfs();
             return;
         }
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (map[i][j] == 0) {
-                    map[i][j] = 1;
-                    dfs(depth+1);
-                    map[i][j] = 0;
-                }
+        for (int i = 0; i < n*m; i++) {
+            int x = i / m;
+            int y = i % m;
+
+            if (map[x][y] == 0) {
+                map[x][y] = 1;
+                dfs(i+1, depth+1);
+                map[x][y] = 0;
             }
         }
     }
