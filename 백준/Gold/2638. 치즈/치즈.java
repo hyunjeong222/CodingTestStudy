@@ -1,15 +1,13 @@
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static int n, m;
     static int[][] map;
-    static int[][] air;
+    static boolean[][] checked;
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
-    static Queue<pos> que;
+    static ArrayList<pos> list;
     static public class pos {
         int x; int y;
         public pos(int x, int y) {
@@ -18,7 +16,6 @@ public class Main {
         }
     }
     static int cheeseCnt = 0;
-    static int ans = 0;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -26,57 +23,67 @@ public class Main {
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         map = new int[n][m];
+        list = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
                 map[i][j] = Integer.parseInt(st.nextToken());
-                if (map[i][j] == 1) cheeseCnt++;
+                if (map[i][j] == 1) {
+                    list.add(new pos(i, j));
+                    cheeseCnt++;
+                }
             }
         }
 
+        int time = 0;
         while (cheeseCnt != 0) {
-            bfs();
+            time++;
+            checked = new boolean[n][m];
+            dfs(0, 0);
+            melting(); 
         }
 
-        bw.append(ans + "\n");
+        bw.append(time + "\n");
         bw.flush();
         bw.close();
         br.close();
     }
 
-    private static void bfs() {
-        air = new int[n][m];
+    private static void melting() {
+        for (int i = 0; i < list.size(); i++) {
+            int x = list.get(i).x;
+            int y = list.get(i).y;
+            int cnt = 0;
 
-        que = new LinkedList<>();
-        que.offer(new pos(0, 0));
-        air[0][0] = -1;
+            for (int j = 0; j < 4; j++) {
+                int nx = x + dx[j];
+                int ny = y + dy[j];
 
-        while (!que.isEmpty()) {
-            pos pq = que.poll();
+                if (map[nx][ny] == 2) cnt++;
+            }
 
-            for (int i = 0; i < 4; i++) {
-                int nx = pq.x + dx[i];
-                int ny = pq.y + dy[i];
+            if (cnt >= 2) {
+                map[x][y] = 0;
+                cheeseCnt--;
+                list.remove(i);
+                i--;
+            }
+        }
+    }
 
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
-                    if (map[nx][ny] == 1) air[nx][ny]++;
-                    if (map[nx][ny] == 0 && air[nx][ny] == 0) {
-                        air[nx][ny] = -1;
-                        que.offer(new pos(nx, ny));
-                    }
+    private static void dfs(int x, int y) {
+        checked[x][y] = true;
+        map[x][y] = 2;
+
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
+                if (!checked[nx][ny] && (map[nx][ny] == 0 || map[nx][ny] == 2)) {
+                    dfs(nx, ny);
                 }
             }
         }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (air[i][j] >= 2) {
-                    cheeseCnt--;
-                    map[i][j] = 0;
-                }
-            }
-        }
-
-        ans++;
     }
 }
