@@ -17,7 +17,6 @@ public class Main {
         c = Integer.parseInt(st.nextToken());
 
         map = new int[r][c];
-        checked = new boolean[26];
         for (int i = 0; i < r; i++) {
             String str = br.readLine();
             for (int j = 0; j < c; j++) {
@@ -25,6 +24,8 @@ public class Main {
             }
         }
 
+        checked = new boolean[26];
+        checked[map[0][0]] = true;
         dfs(0, 0, 1);
         bw.append(ans + "\n");
         bw.flush();
@@ -33,8 +34,7 @@ public class Main {
     }
 
     private static void dfs(int x, int y, int depth) {
-        checked[map[x][y]] = true;
-        boolean isPossible = false;
+        ans = Math.max(ans, depth);
 
         for (int i = 0; i < 4; i++) {
             int nx = dx[i] + x;
@@ -42,13 +42,11 @@ public class Main {
 
             if (nx >= 0 && nx < r && ny >= 0 && ny < c) {
                 if (!checked[map[nx][ny]]) {
-                    isPossible = true;
+                    checked[map[nx][ny]] = true;
                     dfs(nx, ny, depth+1);
                     checked[map[nx][ny]] = false;
                 }
             }
         }
-
-        if (!isPossible) ans = Math.max(ans, depth);
     }
 }
