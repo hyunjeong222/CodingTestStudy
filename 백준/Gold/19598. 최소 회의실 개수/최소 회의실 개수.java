@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -18,27 +19,27 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        int n = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine()); // 배열의 크기
+        pos[] arr = new pos[n];
         StringTokenizer st;
-        PriorityQueue<pos> pq = new PriorityQueue<>();
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            int s = Integer.parseInt(st.nextToken());
-            int e = Integer.parseInt(st.nextToken());
-            pq.offer(new pos(s, e));
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            arr[i] = new pos(start, end);
         }
+        Arrays.sort(arr);
 
-        PriorityQueue<Integer> room = new PriorityQueue<>();
-        room.offer(pq.poll().end);
+        PriorityQueue<Integer> meeting = new PriorityQueue<>();
+        meeting.offer(arr[0].end);
 
-        while (!pq.isEmpty()) {
-            pos time = pq.poll();
-            if (room.peek() <= time.start) {
-                room.poll();
+        for (int i = 1; i < n; i++) {
+            if (meeting.peek() <= arr[i].start) {
+                meeting.poll();
             }
-            room.offer(time.end);
+            meeting.offer(arr[i].end);
         }
-        bw.append(room.size() + "\n");
+        bw.append(meeting.size() + "\n");
         bw.flush();
         bw.close();
         br.close();
