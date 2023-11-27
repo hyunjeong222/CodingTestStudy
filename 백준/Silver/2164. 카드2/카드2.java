@@ -11,9 +11,7 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             que.offer(i);
         }
-        while (true) {
-            if (que.size() == 1) break;
-
+        while (que.size() != 1) {
             que.remove();
             que.offer(que.poll());
         }
