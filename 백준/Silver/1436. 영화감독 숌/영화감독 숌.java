@@ -1,18 +1,20 @@
 import java.io.*;
 
 public class Main {
-    static int i = 666;
-    static int cnt = 0;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        System.out.println(searchN(n));
-    }
 
-    private static int searchN(int n) {
-        if (Integer.toString(i).contains("666")) cnt++;
-        if (cnt == n) return i;
-        i++;
-        return searchN(n);
+        int title = 666;
+        int cnt = 0;
+
+        while (n!=cnt) {
+            String cur = Integer.toString(title);
+            if (cur.contains("666")) {
+                cnt++;
+            }
+            title++;
+        }
+        System.out.println(title-1);
     }
 }
