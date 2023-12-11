@@ -6,17 +6,27 @@ import java.util.StringTokenizer;
 public class Main {
     static int n, m;
     static int[] map;
-    static int[] count;
     static boolean[] checked;
+    static public class pos {
+        int x;
+        int cnt;
+        public pos(int x, int cnt) {
+            this.x = x;
+            this.cnt = cnt;
+        }
+    }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
 
         map = new int[101];
-        count = new int[101];
-        checked = new boolean[101];
+        for (int i = 1; i < map.length; i++) {
+            map[i] = i;
+        }
+
         while (n+m --> 0) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
@@ -25,41 +35,34 @@ public class Main {
             map[u] = v;
         }
 
-        bfs();
+        checked = new boolean[101];
+        int ans = bfs();
+        bw.append(ans + "\n");
+        bw.flush();
+        bw.close();
         br.close();
     }
 
-    private static void bfs() {
-        Queue<Integer> que = new LinkedList<>();
-        que.offer(1);
-        count[1] = 0;
+    private static int bfs() {
+        Queue<pos> que = new LinkedList<>();
+        que.offer(new pos(1, 0));
         checked[1] = true;
 
         while (!que.isEmpty()) {
-            int cur = que.poll();
+            pos cur = que.poll();
 
-            if (cur == 100) {
-                System.out.println(count[cur]);
-                System.exit(0);
-            }
+            if (cur.x == 100) return cur.cnt;
 
             for (int i = 1; i < 7; i++) {
-                int next = cur+i;
+                int next = cur.x+i;
 
                 if (next > 100 || checked[next]) continue;
 
-                if (map[next] != 0) {
-                    if (!checked[map[next]]) {
-                        checked[map[next]] = true;
-                        count[map[next]] = count[cur]+1;
-                        que.offer(map[next]);
-                    }
-                } else {
-                    checked[next] = true;
-                    count[next] = count[cur]+1;
-                    que.offer(next);
-                }
+                que.offer(new pos(map[next], cur.cnt+1));
+                checked[next] = true;
             }
         }
+
+        return -1;
     }
 }
