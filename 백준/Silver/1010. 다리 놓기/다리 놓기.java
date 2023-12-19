@@ -3,33 +3,28 @@ import java.util.StringTokenizer;
 
 public class Main {
     static final int size = 30;
-    static int[][] dp;
-    static int n, m;
     static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
         StringTokenizer st;
         int t = Integer.parseInt(br.readLine());
-        dp = new int[size][size];
+        int[][] dp = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            dp[i][i] = 1;
+            dp[i][0] = 1;
+        }
+        for (int i = 2; i < size; i++) {
+            for (int j = 1; j < size; j++) {
+                dp[i][j] = dp[i-1][j-1] + dp[i-1][j];
+            }
+        }
         while (t --> 0) {
             st = new StringTokenizer(br.readLine());
-            n = Integer.parseInt(st.nextToken());
-            m = Integer.parseInt(st.nextToken());
-            sb.append(combi(m, n)).append("\n");
+            int n = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
+            sb.append(dp[m][n]).append("\n");
         }
         System.out.println(sb);
-    }
-
-    private static int combi(int n, int r) {
-        if (dp[n][r] > 0) { // 이미 계산된 값이라면
-            return dp[n][r];
-        }
-
-        if (n == r || r == 0) {
-            return dp[n][r] = 1;
-        }
-
-        return dp[n][r] = combi(n-1, r-1) + combi(n-1, r);
     }
 }
