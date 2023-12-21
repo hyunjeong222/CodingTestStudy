@@ -2,27 +2,33 @@ import java.io.*;
 import java.util.Arrays;
 
 public class Main {
-    static int n;
-    static int[] prefix;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        n = Integer.parseInt(br.readLine());
-        prefix = new int[n+1];
-        for (int i = 1; i <= n; i++) {
-            prefix[i] = Integer.parseInt(br.readLine()) + prefix[i-1];
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n+1];
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+            sum += arr[i];
         }
-        int ans = Integer.MIN_VALUE;
-        for (int i = 1; i <= n; i++) {
-            for (int j = i+1; j <= n; j++) {
-                int rightD = prefix[j-1] - prefix[i-1];
-                int leftD = prefix[n] - rightD;
-                int min = Math.min(rightD, leftD); 
-                ans = Math.max(ans, min);
-                if (rightD >= leftD) break;
+
+        int min = 0; int max = 0;
+        int left = 0; int right = 0;
+        int now = arr[left];
+        while (left <= right && right < n) {
+            min = Math.min(now, sum-now);
+            max = Math.max(max, min);
+
+            if (now == min) {
+                right++;
+                now += arr[right];
+            } else {
+                now -= arr[left];
+                left++;
             }
         }
-        bw.append(ans + "\n");
+        bw.append(max + "\n");
         bw.flush();
         bw.close();
         br.close();
