@@ -14,11 +14,12 @@ public class Main {
         }
         int ans = Integer.MIN_VALUE;
         for (int i = 1; i <= n; i++) {
-            for (int j = i; j <= n; j++) {
+            for (int j = i+1; j <= n; j++) {
                 int rightD = prefix[j-1] - prefix[i-1];
                 int leftD = prefix[n] - rightD;
-                int min = Math.min(rightD, leftD);
+                int min = Math.min(rightD, leftD); 
                 ans = Math.max(ans, min);
+                if (rightD >= leftD) break;
             }
         }
         bw.append(ans + "\n");
