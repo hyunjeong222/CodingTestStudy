@@ -34,7 +34,6 @@ public class Main {
                 if (map[i][j] == 2) list.add(new Pos(i, j, 0));
             }
         }
-        
         virus = new Pos[m];
         dfs(0, 0);
 
@@ -47,6 +46,7 @@ public class Main {
 
     private static void dfs(int start, int count) {
         if (count == m) {
+            checked = new boolean[n][n];
             bfs();
             return;
         }
@@ -59,30 +59,26 @@ public class Main {
 
     private static void bfs() {
         Queue<Pos> que = new LinkedList<>();
-        checked = new boolean[n][n];
 
         for (int i = 0; i < m; i++) {
             int x = virus[i].x; int y = virus[i].y;
             checked[x][y] = true;
-            que.offer(new Pos(x, y, 0));
+            que.offer(virus[i]);
         }
 
         int time = 0;
         while (!que.isEmpty()) {
-            int size = que.size();
             Pos now = que.poll();
             time = now.time;
 
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < 4; j++) {
-                    int nx = dx[j] + now.x;
-                    int ny = dy[j] + now.y;
+            for (int j = 0; j < 4; j++) {
+                int nx = dx[j] + now.x;
+                int ny = dy[j] + now.y;
 
-                    if (nx >= 0 && nx < n && ny >= 0 && ny < n && !checked[nx][ny]) {
-                        if (map[nx][ny] != 1) {
-                            checked[nx][ny] = true;
-                            que.offer(new Pos(nx, ny, now.time+1));
-                        }
+                if (nx >= 0 && nx < n && ny >= 0 && ny < n && !checked[nx][ny]) {
+                    if (map[nx][ny] != 1) {
+                        checked[nx][ny] = true;
+                        que.offer(new Pos(nx, ny, now.time+1));
                     }
                 }
             }
