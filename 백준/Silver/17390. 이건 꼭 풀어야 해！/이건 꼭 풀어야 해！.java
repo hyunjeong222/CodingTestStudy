@@ -19,13 +19,15 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             prefix[i] = prefix[i-1] + arr[i];
         }
+        int l, r, ans;
         while (q --> 0) {
             st = new StringTokenizer(br.readLine());
-            int l = Integer.parseInt(st.nextToken());
-            int r = Integer.parseInt(st.nextToken());
-            int ans = prefix[r] - prefix[l-1];
+            l = Integer.parseInt(st.nextToken());
+            r = Integer.parseInt(st.nextToken());
+            ans = prefix[r] - prefix[l-1];
             sb.append(ans).append("\n");
         }
+        br.readLine();
         System.out.println(sb);
     }
 }
