@@ -35,10 +35,10 @@ public class Main {
             int c = Integer.parseInt(st.nextToken());
             int d = Integer.parseInt(st.nextToken());
 
-            for (int i = 0; i < 3; i++) {
-                sb.append(prefix[c][d][i] - prefix[a-1][d][i] - prefix[c][b-1][i] + prefix[a-1][b-1][i]).append(" ");
-            }
-            sb.append("\n");
+            int jungle = prefix[c][d][0] - prefix[a-1][d][0] - prefix[c][b-1][0] + prefix[a-1][b-1][0];
+            int sea = prefix[c][d][1] - prefix[a-1][d][1] - prefix[c][b-1][1] + prefix[a-1][b-1][1];
+            int ice = prefix[c][d][2] - prefix[a-1][d][2] - prefix[c][b-1][2] + prefix[a-1][b-1][2];
+            sb.append(jungle + " " + sea + " " + ice).append("\n");
         }
 
         System.out.println(sb);
