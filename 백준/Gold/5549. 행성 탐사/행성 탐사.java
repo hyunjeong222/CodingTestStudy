@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int[][][] prefix;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -11,7 +12,7 @@ public class Main {
         int n = Integer.parseInt(st.nextToken());
         int m = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(br.readLine()); // 조사 대상 영역의 개수
-        int[][][] prefix = new int[n+1][m+1][3]; // 0: 정글, 1: 바다, 2: 얼음
+        prefix = new int[n+1][m+1][3]; // 0: 정글, 1: 바다, 2: 얼음
         for (int i = 1; i <= n; i++) {
             String str = br.readLine();
             for (int j = 1; j <= m; j++) {
