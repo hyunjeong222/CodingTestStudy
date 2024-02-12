@@ -30,6 +30,10 @@ public class Main {
         for (int i = 0; i < n; i++) {
             ans[i] = Integer.parseInt(st.nextToken());
         }
+        if (ans[0] != 1) {
+            System.out.println(0);
+            System.exit(0);
+        }
         if (bfs(1)) System.out.println(1);
         else System.out.println(0);
     }
