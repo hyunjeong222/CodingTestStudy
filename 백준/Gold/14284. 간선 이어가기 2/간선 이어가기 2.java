@@ -60,6 +60,7 @@ public class Main {
             Pos now = pq.poll();
             int end = now.end;
             if (checked[end]) continue;
+            if (now.end == t) break;
             checked[end] = true;
             for (Pos next : list.get(end)) {
                 if (!checked[next.end] && dist[next.end] > dist[end] + next.dist) {
