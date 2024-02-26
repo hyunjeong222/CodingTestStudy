@@ -9,7 +9,6 @@ public class Main {
     static int n, m;
     static int[][] map;
     static boolean[][] checked;
-    static int[][] zero;
     static Queue<Pos> que;
     static public class Pos {
         int x; int y;
@@ -83,25 +82,19 @@ public class Main {
                 }
             }
         }
-        zero = new int[n][m];
         while (!que.isEmpty()) {
             Pos now = que.poll();
+            int zero = 0;
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + now.x;
                 int ny = dy[i] + now.y;
 
                 if (nx >= n || nx < 0 || ny >= m || ny < 0) continue;
 
-                if (map[nx][ny] == 0) zero[now.x][now.y]++;
+                if (!checked[nx][ny] && map[nx][ny] == 0) zero++;
             }
-        }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (zero[i][j] != 0) {
-                    map[i][j] -= zero[i][j];
-                    if (map[i][j] < 0) map[i][j] = 0;
-                }
-            }
+            if (map[now.x][now.y]-zero < 0) map[now.x][now.y] = 0;
+            else map[now.x][now.y] -= zero;
         }
     }
 }
