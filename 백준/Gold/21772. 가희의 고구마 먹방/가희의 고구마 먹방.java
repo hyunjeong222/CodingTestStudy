@@ -30,7 +30,10 @@ public class Main {
             String str = br.readLine();
             for (int j = 0; j < c; j++) {
                 map[i][j] = str.charAt(j);
-                if (map[i][j] == 'G') spot[0] = new Pos(i, j);
+                if (map[i][j] == 'G') {
+                    spot[0] = new Pos(i, j);
+                    map[i][j] = '.';
+                }
             }
         }
         dfs(spot[0].x, spot[0].y, 0, 0);
@@ -38,7 +41,7 @@ public class Main {
     }
 
     private static void dfs(int x, int y, int depth, int cnt) {
-        if (depth >= t) {
+        if (depth == t) {
             ans = Math.max(ans, cnt);
             return;
         }
@@ -50,10 +53,10 @@ public class Main {
             if (nx < 0 || nx >= r || ny < 0 || ny >= c) continue;
             if (map[nx][ny] == '#') continue;
 
-            if (map[nx][ny] == 'S') {
-                map[nx][ny] = '.';
+            if (map[nx][ny] == 'S' && !checked[nx][ny]) {
+                checked[nx][ny] = true;
                 dfs(nx, ny, depth+1, cnt+1);
-                map[nx][ny] = 'S';
+                checked[nx][ny] = false;
             } else {
                 dfs(nx, ny, depth+1, cnt);
             }
