@@ -33,9 +33,11 @@ public class Main {
             Collections.sort(l, Collections.reverseOrder());
         }
         bfs(r);
+        StringBuilder sb = new StringBuilder();
         for (int i = 1; i <= n; i++) {
-            System.out.println(count[i]);
+            sb.append(count[i]).append("\n");
         }
+        System.out.println(sb);
     }
 
     private static void bfs(int x) {
@@ -45,12 +47,13 @@ public class Main {
         checked[x] = true;
         int cnt = 1;
         count = new int[n+1];
+        count[x] = cnt++;
         while (!que.isEmpty()) {
             int now = que.poll();
-            count[now] = cnt++;
             for (int next : list.get(now)) {
                 if (!checked[next]) {
                     que.offer(next);
+                    count[next] = cnt++;
                     checked[next] = true;
                 }
             }
