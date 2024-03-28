@@ -52,18 +52,11 @@ public class Main {
                 num = Integer.parseInt(st.nextToken());
                 Dijkstra(num);
             }
-            int min = ansArr[1];
-            for (int i = 1; i <= n; i++) {
-                min = Math.min(min, ansArr[i]);
+            int min = 1;
+            for (int i = 2; i <= n; i++) {
+                if (ansArr[min] > ansArr[i]) min = i;
             }
-            int ans = 1;
-            for (int i = 1; i <= n; i++) {
-                if (min == ansArr[i]) {
-                    ans = i;
-                    break;
-                }
-            }
-            sb.append(ans).append("\n");
+            sb.append(min).append("\n");
         }
         System.out.println(sb);
     }
@@ -71,10 +64,10 @@ public class Main {
     private static void Dijkstra(int x) {
         pq = new PriorityQueue<>();
         pq.offer(new Pos(x, 0));
+        checked = new boolean[n+1];
         dist = new int[n+1];
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[x] = 0;
-        checked = new boolean[n+1];
 
         while (!pq.isEmpty()) {
             Pos now = pq.poll();
