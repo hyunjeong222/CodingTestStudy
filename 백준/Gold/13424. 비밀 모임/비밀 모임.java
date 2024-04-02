@@ -32,15 +32,7 @@ public class Main {
                 dist[u][v] = w;
                 dist[v][u] = w;
             }
-            for (int k = 1; k <= n; k++) {
-                for (int i = 1; i <= n; i++) {
-                    if (i == k) continue;
-                    for (int j = 1; j <= n; j++) {
-                        if (i == j || j == k) continue;
-                        dist[i][j] = Math.min(dist[i][j], dist[i][k]+dist[k][j]);
-                    }
-                }
-            }
+            floyd();
             int[] ansArr = new int[n+1];
             int k = Integer.parseInt(br.readLine()); // 모임에 참여하는 친구 수
             st = new StringTokenizer(br.readLine());
@@ -57,5 +49,18 @@ public class Main {
             sb.append(min).append("\n");
         }
         System.out.println(sb);
+    }
+
+    private static void floyd() {
+        for (int k = 1; k <= n; k++) {
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= n; j++) {
+                    if (i == j || j == k || k == i) continue;
+                    if (dist[i][j] > dist[i][k] + dist[k][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+                }
+            }
+        }
     }
 }
