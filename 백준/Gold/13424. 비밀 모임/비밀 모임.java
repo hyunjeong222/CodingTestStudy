@@ -1,28 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
     static int n, m;
-    static int[] ansArr;
-    static PriorityQueue<Pos> pq;
-    static boolean[] checked;
-    static int[] dist;
-    static ArrayList<ArrayList<Pos>> list;
-    static public class Pos implements Comparable<Pos> {
-        int end; int dist;
-        public Pos(int end, int dist) {
-            this.end = end; this.dist = dist;
-        }
-        @Override
-        public int compareTo(Pos o) {
-            return this.dist - o.dist;
-        }
-    }
+    static int[][] dist;
+    static final int INF = 987654321;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -31,26 +15,40 @@ public class Main {
             StringTokenizer st = new StringTokenizer(br.readLine());
             n = Integer.parseInt(st.nextToken()); // 방의 개수
             m = Integer.parseInt(st.nextToken()); // 비밀통로의 개수
-            list = new ArrayList<>();
-            for (int i = 0; i <= n; i++) {
-                list.add(new ArrayList<>());
+            dist = new int[n+1][n+1];
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= n; j++) {
+                    if (i == j) continue;
+                    dist[i][j] = INF;
+                }
             }
-            int a, b, c;
-            while (m --> 0) {
+            int u, v, w;
+            for (int i = 0; i < m ;i++) {
                 st = new StringTokenizer(br.readLine());
-                a = Integer.parseInt(st.nextToken());
-                b = Integer.parseInt(st.nextToken());
-                c = Integer.parseInt(st.nextToken());
-                list.get(a).add(new Pos(b, c));
-                list.get(b).add(new Pos(a, c));
+                u = Integer.parseInt(st.nextToken());
+                v = Integer.parseInt(st.nextToken());
+                w = Integer.parseInt(st.nextToken());
+
+                dist[u][v] = w;
+                dist[v][u] = w;
             }
-            ansArr = new int[n+1];
-            int k = Integer.parseInt(br.readLine());
+            for (int k = 1; k <= n; k++) {
+                for (int i = 1; i <= n; i++) {
+                    if (i == k) continue;
+                    for (int j = 1; j <= n; j++) {
+                        if (i == j || j == k) continue;
+                        dist[i][j] = Math.min(dist[i][j], dist[i][k]+dist[k][j]);
+                    }
+                }
+            }
+            int[] ansArr = new int[n+1];
+            int k = Integer.parseInt(br.readLine()); // 모임에 참여하는 친구 수
             st = new StringTokenizer(br.readLine());
-            int num;
-            for (int i = 0; i < k; i++) {
-                num = Integer.parseInt(st.nextToken());
-                Dijkstra(num);
+            for (int i = 1; i <= k; i++) {
+                int num = Integer.parseInt(st.nextToken());
+                for (int j = 1; j <= n; j++) {
+                    ansArr[j] += dist[num][j];
+                }
             }
             int min = 1;
             for (int i = 2; i <= n; i++) {
@@ -59,33 +57,5 @@ public class Main {
             sb.append(min).append("\n");
         }
         System.out.println(sb);
-    }
-
-    private static void Dijkstra(int x) {
-        pq = new PriorityQueue<>();
-        pq.offer(new Pos(x, 0));
-        checked = new boolean[n+1];
-        dist = new int[n+1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-        dist[x] = 0;
-
-        while (!pq.isEmpty()) {
-            Pos now = pq.poll();
-            int end = now.end;
-
-            if (checked[end]) continue;
-            checked[end] = true;
-
-            for (Pos next : list.get(end)) {
-                if (dist[next.end] > dist[end]+next.dist) {
-                    dist[next.end] = dist[end]+next.dist;
-                    pq.offer(new Pos(next.end, dist[next.end]));
-                }
-            }
-        }
-
-        for (int i = 1; i <= n; i++) {
-            ansArr[i] += dist[i];
-        }
     }
 }
