@@ -22,7 +22,7 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= k; j++) {
                 dp[i][j] = dp[i-1][j];
-                if (j - cost[i] >= 0) {
+                if (cost[i] <= j) {
                     dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j-cost[i]]+value[i]);
                 }
             }
