@@ -38,12 +38,12 @@ public class Main {
         Set<String> set = new HashSet<>();
 
         for (int i = 0; i < c; i++) {
-            String key = "";
+            StringBuilder str = new StringBuilder();
             for (int j = mid + 1; j < r; j++) {
-                key += arr[j][i];
+                str.append(arr[j][i]);
             }
-            if (set.contains(key)) return false;
-            else set.add(key);
+            if (set.contains(String.valueOf(str))) return false;
+            else set.add(String.valueOf(str));
         }
 
         return true;
