@@ -16,7 +16,7 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int m = Integer.parseInt(st.nextToken()); // 사대의 수
         int n = Integer.parseInt(st.nextToken()); // 동물의 수
-        int l = Integer.parseInt(st.nextToken()); // 사정거리
+        long l = Integer.parseInt(st.nextToken()); // 사정거리
 
         int[] arr = new int[m]; // 사대의 위치
         st = new StringTokenizer(br.readLine());
@@ -36,10 +36,10 @@ public class Main {
 
         int ans = 0;
         for (int i = 0; i < n; i++) {
-            int left = 0; int right = m;
+            int left = 0; int right = m-1;
             while (left <= right) {
                 int mid = left + (right - left) / 2;
-                int dist = Math.abs(arr[mid] - animals[i].x) + animals[i].y;
+                long dist = Math.abs(arr[mid] - animals[i].x) + animals[i].y;
 
                 if (dist <= l) { // 사정거리 안
                     ans++;
