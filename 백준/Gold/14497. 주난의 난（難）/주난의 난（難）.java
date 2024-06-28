@@ -2,89 +2,72 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.StringTokenizer;
 
-import static java.lang.Integer.parseInt;
-
 public class Main {
-    static int N, M;
+    static int n, m;
     static int[][] map;
-    static boolean[][] visited;
-
+    static boolean[][] checked;
+    static int jx, jy, cx, cy;
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1};
+    static public class Pos {
+        int x; int y; int cnt;
+        public Pos(int x, int y, int cnt) {
+            this.x = x; this.y = y; this.cnt = cnt;
+        }
+    }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        N = parseInt(st.nextToken());
-        M = parseInt(st.nextToken());
-        map = new int[N][M];
-        visited = new boolean[N][M];
-
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        map = new int[n][m];
+        checked = new boolean[n][m];
         st = new StringTokenizer(br.readLine());
-        int sy = parseInt(st.nextToken()) - 1;
-        int sx = parseInt(st.nextToken()) - 1;
-        int ey = parseInt(st.nextToken()) - 1;
-        int ex = parseInt(st.nextToken()) - 1;
-
-        String line;
-        char val;
-        for (int y = 0; y < N; y++) {
-            line = br.readLine();
-            for (int x = 0; x < M; x++) {
-                val = line.charAt(x);
-                if (val == '#' || val == '*')
-                    continue;
-
-                map[y][x] = val - '0';
+        // 주난의 위치
+        jy = Integer.parseInt(st.nextToken())-1;
+        jx = Integer.parseInt(st.nextToken())-1;
+        // 범인의 위치
+        cy = Integer.parseInt(st.nextToken())-1;
+        cx = Integer.parseInt(st.nextToken())-1;
+        for (int j = 0; j < n; j++) {
+            String str = br.readLine();
+            for (int i = 0; i < m; i++) {
+                char c = str.charAt(i);
+                if (c == '#' || c == '*') continue;
+                map[j][i] = c - '0';
             }
         }
-
-        map[ey][ex] = 1;
-        System.out.println(bfs(sx, sy, ex, ey));
+        map[cy][cx] = 1;
+        int ans = bfs();
+        // System.out.println(Arrays.deepToString(map));
+        System.out.println(ans);
         br.close();
     }
 
-    static int bfs(int sx, int sy, int ex, int ey) {
-        ArrayDeque<Node> queue = new ArrayDeque<>();
-        queue.offer(new Node(sx, sy, 0));
-        visited[sy][sx] = true;
+    private static int bfs() {
+        ArrayDeque<Pos> que = new ArrayDeque<>();
+        que.offer(new Pos(jx, jy, 0));
+        checked[jy][jx] = true;
 
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
-        int nx, ny;
+        while (!que.isEmpty()) {
+            Pos now = que.poll();
 
-        while (!queue.isEmpty()) {
-            Node cur = queue.poll();
-            if (cur.x == ex && cur.y == ey) return cur.level;
+            if (now.x == cx && now.y == cy) return now.cnt;
 
-            for (int i = 0; i < dx.length; i++) {
-                nx = cur.x + dx[i];
-                ny = cur.y + dy[i];
+            for (int i = 0; i < 4; i++) {
+                int nx = dx[i] + now.x;
+                int ny = dy[i] + now.y;
 
-                if (nx < 0 || nx >= M || ny < 0 || ny >= N)
-                    continue;
+                if (nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                if (checked[ny][nx]) continue;
 
-                if (visited[ny][nx]) continue;
-
-                visited[ny][nx] = true;
-                if (map[ny][nx] == 0) {
-                    queue.offerFirst(new Node(nx, ny, cur.level));
-                } else {
-                    queue.offerLast(new Node(nx, ny, cur.level + 1));
-                }
+                checked[ny][nx] = true;
+                if (map[ny][nx] == 0) que.offerFirst(new Pos(nx, ny, now.cnt));
+                else que.offerLast(new Pos(nx, ny, now.cnt+1));
             }
         }
-
         return -1;
-    }
-
-    static class Node {
-        int x, y, level;
-
-        public Node(int x, int y, int level) {
-            this.x = x;
-            this.y = y;
-            this.level = level;
-        }
     }
 }
