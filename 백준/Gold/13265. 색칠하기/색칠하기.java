@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n, m;
     static ArrayList<ArrayList<Integer>> list;
-    static int[] color;
+    static int[] colors;
     static boolean isPossible;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,45 +15,47 @@ public class Main {
         StringTokenizer st;
         while (t --> 0) {
             st = new StringTokenizer(br.readLine());
-            n = Integer.parseInt(st.nextToken());
-            m = Integer.parseInt(st.nextToken());
+            int n = Integer.parseInt(st.nextToken()); // 정점 수
+            int m = Integer.parseInt(st.nextToken()); // 간선 수
+
             list = new ArrayList<>();
-            for (int i = 0; i <= n; i++) {
+            for (int i = 0; i <= n ;i++) {
                 list.add(new ArrayList<>());
             }
-            while (m --> 0) {
-                st = new StringTokenizer(br.readLine());
-                int x = Integer.parseInt(st.nextToken());
-                int y = Integer.parseInt(st.nextToken());
 
-                list.get(x).add(y);
-                list.get(y).add(x);
+            for (int i = 0; i < m; i++) {
+                st = new StringTokenizer(br.readLine());
+                int u = Integer.parseInt(st.nextToken());
+                int v = Integer.parseInt(st.nextToken());
+
+                list.get(u).add(v);
+                list.get(v).add(u);
             }
 
-            color = new int[n+1];
+            colors = new int[n+1];
             isPossible = true;
             for (int i = 1; i <= n; i++) {
-                if (!isPossible) break;
-                if (color[i] == 0) {
-                    color[i] = 1;
+                if (colors[i] == 0) {
+                    colors[i] = 1;
                     dfs(i);
                 }
             }
 
             sb.append(isPossible ? "possible" : "impossible").append("\n");
         }
+        
         System.out.println(sb);
     }
 
     private static void dfs(int node) {
-        for (int i = 0; i < list.get(node).size(); i++) {
-            int next = list.get(node).get(i);
-            if (color[next] == color[node]) {
+        for (int next : list.get(node)) {
+            if (colors[next] == colors[node]) {
                 isPossible = false;
                 return;
             }
-            if (color[next] == 0) {
-                color[next] = 3-color[node]; // 2
+
+            if (colors[next] == 0) {
+                colors[next] = 3 - colors[node];
                 dfs(next);
             }
         }
