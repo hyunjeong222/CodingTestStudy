@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -40,14 +39,13 @@ public class Main {
                 } else map[i][j] = tmp[j];
             }
         }
-        // System.out.println(Arrays.deepToString(map));
-        // System.out.println(objectCnt);
+        
         int ans = bfs();
         System.out.println(ans);
     }
 
     private static int bfs() {
-        int x = (1 << (objectCnt)) - 1;
+        int x = (1 << objectCnt) - 1;
         que = new LinkedList<>();
         checked = new boolean[m][n][x+1]; // 168421
         que.offer(new Pos(sx, sy, 0, 0));
