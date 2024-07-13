@@ -7,17 +7,10 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
         String binary = br.readLine();
-
-        // 이진수를 정수로 변환
-        int k = Integer.parseInt(binary, 2);
-        // System.out.println(k);
-
-        int cnt = 0;
-        while (k != 0) {
-            k = k - (k & (~k + 1));
-            cnt++;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (binary.charAt(i) == '1') ans++;
         }
-
-        System.out.println(cnt);
+        System.out.println(ans);
     }
 }
