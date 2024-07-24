@@ -7,18 +7,14 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int[] parent;
-    static ArrayList<ArrayList<Integer>> friend;
-    static ArrayList<ArrayList<Integer>> enemy;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine()); // 학생 수
         int m = Integer.parseInt(br.readLine()); // 인간관계
 
-        friend = new ArrayList<>();
-        enemy = new ArrayList<>();
         parent = new int[n+1];
+        ArrayList<ArrayList<Integer>> enemy = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
-            friend.add(new ArrayList<>());
             enemy.add(new ArrayList<>());
             parent[i] = i;
         }
@@ -26,41 +22,30 @@ public class Main {
         StringTokenizer st;
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
-            char c = st.nextToken().charAt(0); // F 친구, E 원수
+            char type = st.nextToken().charAt(0);
             int p = Integer.parseInt(st.nextToken());
             int q = Integer.parseInt(st.nextToken());
-            if (c == 'E') {
+
+            if (type == 'E') { // 원수
                 enemy.get(p).add(q);
                 enemy.get(q).add(p);
-            } else if (c == 'F') {
-                friend.get(p).add(q);
-                friend.get(q).add(p);
+            } else { // F : 친구
+                union(p, q);
             }
         }
 
         // 원수의 원수는 친구
         for (int i = 1; i <= n; i++) {
-            for (int j = 0; j < enemy.get(i).size(); j++) {
-                int e = enemy.get(i).get(j);
-
-                for (int k = 0; k < enemy.get(e).size(); k++) {
-                    if (i == enemy.get(e).get(k)) continue;
-
-                    friend.get(i).add(enemy.get(e).get(k));
-                    friend.get(enemy.get(e).get(k)).add(i);
+            for (int e : enemy.get(i)) {
+                for (int f : enemy.get(e)) {
+                    union(i, f);
                 }
-            }
-        }
-
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j < friend.get(i).size(); j++) {
-                union(i, friend.get(i).get(j));
             }
         }
 
         HashSet<Integer> set = new HashSet<>();
         for (int i = 1; i <= n; i++) {
-            set.add(parent[i]);
+            set.add(find(i));
         }
 
         System.out.println(set.size());
