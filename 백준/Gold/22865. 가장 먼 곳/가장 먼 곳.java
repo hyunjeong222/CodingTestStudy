@@ -8,8 +8,9 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int n;
-    static int a, b, c;
     static ArrayList<ArrayList<Pos>> list;
+    static PriorityQueue<Pos> pq;
+    static int[] dist;
     static public class Pos implements Comparable<Pos> {
         int end; int dist;
         public Pos(int end, int dist) {
@@ -27,9 +28,9 @@ public class Main {
         n = Integer.parseInt(br.readLine());
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        a = Integer.parseInt(st.nextToken());
-        b = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
+        int a = Integer.parseInt(st.nextToken());
+        int b = Integer.parseInt(st.nextToken());
+        int c = Integer.parseInt(st.nextToken());
 
         list = new ArrayList<>();
         for (int i = 0; i <= n; i++) {
@@ -51,48 +52,41 @@ public class Main {
         int[] bArr = getDijkstra(b);
         int[] cArr = getDijkstra(c);
 
-        int num = getNum(aArr, bArr, cArr);
-        System.out.println(num);
-    }
-
-    private static int getNum(int[] aArr, int[] bArr, int[] cArr) {
-        int num = 0;
+        int ans = 0;
         int min;
         int max = 0;
         for (int i = 1; i <= n; i++) {
             if (i == a || i == b || i == c) continue; // 친구 집 제외
 
             min = Math.min(aArr[i], Math.min(bArr[i], cArr[i]));
+
             if (min != INF && min > max) {
-                num = i;
+                ans = i;
                 max = min;
             }
         }
 
-        return num;
+        System.out.println(ans);
     }
 
     private static int[] getDijkstra(int start) {
-        PriorityQueue<Pos> pq = new PriorityQueue<>();
-        int[] dist = new int[n+1];
+        dist = new int[n+1];
         Arrays.fill(dist, INF);
 
+        pq = new PriorityQueue<>();
         pq.offer(new Pos(start, 0));
         dist[start] = 0;
 
         while (!pq.isEmpty()) {
             Pos now = pq.poll();
             int end = now.end;
-            int len = now.dist;
 
-            if (dist[end] < len) continue;
+            if (dist[end] < now.dist) continue;
 
-            int nextLen;
             for (Pos next : list.get(end)) {
-                nextLen = len + next.dist;
-                if (dist[next.end] > nextLen) {
-                    dist[next.end] = nextLen;
-                    pq.offer(new Pos(next.end, nextLen));
+                if (dist[next.end] > dist[end] + next.dist) {
+                    dist[next.end] = dist[end] + next.dist;
+                    pq.offer(new Pos(next.end, dist[next.end]));
                 }
             }
         }
