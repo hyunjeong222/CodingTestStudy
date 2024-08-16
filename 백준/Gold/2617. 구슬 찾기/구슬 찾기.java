@@ -28,7 +28,7 @@ public class Main {
                 for (int k = 1; k <= n; k++) { // 도착 구슬
                     // 같은 경우 탐색 X
                     if (i == k || j == k) continue;
-                    if (dist[k][i] != 0 && dist[k][i] == dist[i][j]) {
+                    if (dist[k][i] != 0 && dist[j][i] == dist[i][k]) {
                         dist[j][k] = dist[j][i];
                     }
                 }
