@@ -68,7 +68,8 @@ public class Main {
             if (map[now.x][now.y] != 0 && map[now.x][now.y] != num) {
                 min = Math.min(min, now.cnt-1);
             }
-
+            if (now.cnt > min) return;
+            
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + now.x;
                 int ny = dy[i] + now.y;
