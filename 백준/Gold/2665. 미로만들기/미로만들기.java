@@ -1,43 +1,63 @@
 import java.io.*;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class Main {
     static int n;
-    static int[][] map;
-    static int[][] dist;
+    static char[][] map;
+    static boolean[][] checked;
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
-    static public class Pos {
-        int x; int y;
-        public Pos(int x, int y) {
-            this.x = x; this.y = y;
+    static PriorityQueue<Pos> pq;
+    static public class Pos implements Comparable<Pos> {
+        int x; int y; int cnt;
+        public Pos(int x, int y, int cnt) {
+            this.x = x; this.y = y; this.cnt = cnt;
+        }
+        @Override
+        public int compareTo(Pos o) {
+            return this.cnt - o.cnt;
         }
     }
-    static Queue<Pos> que;
+    static final int INF = 987654321;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
-        map = new int[n][n];
-        dist = new int[n][n];
+        map = new char[n][n];
         for (int i = 0; i < n; i++) {
             String str = br.readLine();
             for (int j = 0; j < n; j++) {
-                map[i][j] = str.charAt(j) - '0';
-                dist[i][j] = Integer.MAX_VALUE;
+                map[i][j] = str.charAt(j);
             }
         }
-        bfs(0, 0);
-        System.out.println(dist[n-1][n-1]); 
+        // System.out.println(Arrays.deepToString(map));
+
+        System.out.println(bfs());
+        br.close();
     }
 
-    private static void bfs(int x, int y) {
-        que = new LinkedList<>();
-        que.offer(new Pos(x, y));
-        dist[x][y] = 0;
+    private static int bfs() {
+        checked = new boolean[n][n];
+        int[][] dist = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dist[i], INF);
+        }
+        dist[0][0] = 0;
 
-        while (!que.isEmpty()) {
-            Pos now = que.poll();
+        pq = new PriorityQueue<>();
+        pq.offer(new Pos(0, 0, 0));
+
+        int cnt = 0;
+
+        while (!pq.isEmpty()) {
+            Pos now = pq.poll();
+
+            if (checked[now.x][now.y]) continue;
+            checked[now.x][now.y] = true;
+
+            if (now.x == n-1 && now.y == n-1) return now.cnt;
 
             for (int i = 0; i < 4; i++) {
                 int nx = dx[i] + now.x;
@@ -45,12 +65,20 @@ public class Main {
 
                 if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
 
-                if (dist[nx][ny] > dist[now.x][now.y]) {
-                    if (map[nx][ny] == 1) dist[nx][ny] = dist[now.x][now.y];
-                    else dist[nx][ny] = dist[now.x][now.y] + 1;
-                    que.offer(new Pos(nx, ny));
+                if (map[nx][ny] == '0') { // 검은방
+                    if (dist[nx][ny] > now.cnt+1) {
+                        dist[nx][ny] = now.cnt+1;
+                        pq.offer(new Pos(nx, ny, dist[nx][ny]));
+                    }
+                } else {
+                    if (dist[nx][ny] > now.cnt) {
+                        dist[nx][ny] = now.cnt;
+                        pq.offer(new Pos(nx, ny, dist[nx][ny]));
+                    }
                 }
             }
         }
+
+        return cnt;
     }
 }
