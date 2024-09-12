@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -35,6 +33,7 @@ public class Main {
         int idx;
         for (int i = 0; i < k; i++) {
             idx = Integer.parseInt(st.nextToken());
+            // 발전소가 있는 도시는 다른 도시와 연결하지 않아도 되므로 부모노드 -1 설정
             parent[idx] = -1;
         }
 
@@ -53,14 +52,30 @@ public class Main {
         while (!pq.isEmpty()) {
             Pos now = pq.poll();
 
+            // 부모도느가 다를때 (사이클 X)
             if (find(now.u) != find(now.v)) {
                 union(now.u, now.v);
                 ans += now.w;
+
+                // 모든 도시가 발전소에 의해 전기를 공급받고 있다면 종료
+                if (isAll()) {
+                    break;
+                }
             }
         }
 
         System.out.println(ans);
         br.close();
+    }
+
+    private static boolean isAll() {
+        for (int i = 1; i <= n; i++) {
+            if (parent[i] != -1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private static void union(int u, int v) {
