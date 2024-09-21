@@ -8,12 +8,10 @@ public class Main {
         StringBuilder sb = new StringBuilder();
         int n = Integer.parseInt(br.readLine());
         String str;
-        String tmp;
         while (n --> 0) {
             str = br.readLine();
-            tmp = str.substring(1, str.length());
-            str = str.toUpperCase();
-            sb.append(str.charAt(0)).append(tmp).append("\n");
+            sb.append(str.substring(0, 1).toUpperCase())
+                    .append(str.substring(1, str.length())).append("\n");
         }
         System.out.println(sb.toString());
     }
