@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int ans1, ans2;
+    static int n;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
         int[][] map = new int[n+1][n+1];
         StringTokenizer st;
         for (int i = 1 ; i <= n; i++) {
@@ -17,37 +17,25 @@ public class Main {
             }
         }
 
-        matrix_path(n, map);
-        matrix_path_dp(n, map);
+        int ans1 = matrix_path();
+        int ans2 = n*n;
 
         StringBuilder sb = new StringBuilder();
         sb.append(ans1).append(" ").append(ans2);
         System.out.println(sb.toString());
     }
 
-    private static int matrix_path_dp(int n, int[][] map) {
+    private static int matrix_path() {
         int[][] dp = new int[n+1][n+1];
-        for (int i = 0; i <= n; i++) dp[i][0] = 0;
-        for (int j = 1; j <= n; j++) dp[0][j] = 0;
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 1;
+            dp[0][i] = 1;
+        }
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                ans2++;
-                dp[i][j] = map[i][j] + (Math.max(dp[i-1][j], dp[i][j-1]));
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
             }
         }
         return dp[n][n];
-    }
-
-    private static int matrix_path(int n, int[][] map) {
-        return matrix_path_rec(map, n, n);
-    }
-
-    private static int matrix_path_rec(int[][] map, int i, int j) {
-        if (i == 0 || j == 0) {
-            ans1++;
-            return 0;
-        } else {
-            return (map[i][j] + (Math.max(matrix_path_rec(map, i-1, j), matrix_path_rec(map, i, j-1))));
-        }
     }
 }
