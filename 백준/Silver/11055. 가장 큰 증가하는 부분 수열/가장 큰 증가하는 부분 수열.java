@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -14,17 +15,16 @@ public class Main {
         }
         int[] dp = new int[n+1];
         int ans = 0;
-        dp[1] = arr[1];
-        for (int i = 2; i <= n; i++) {
+        for (int i = 1; i <= n; i++) {
             dp[i] = arr[i];
-            for (int j = 1; j < i; j++) {
+            for (int j = 1; j <= n; j++) {
                 if (arr[i] > arr[j]) {
                     dp[i] = Math.max(dp[i], arr[i]+dp[j]);
                 }
             }
             ans = Math.max(ans, dp[i]);
         }
-        ans = Math.max(dp[1], ans);
+
         System.out.println(ans);
     }
 }
