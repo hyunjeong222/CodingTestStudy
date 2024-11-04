@@ -18,7 +18,6 @@ public class Main {
 
         int len = 0, idx = 0;
         memo = new int[n+1];
-        memo[0] = -1000000000;
         int[] dp = new int[n]; // 증가 부분 수열 크기 저장
         for (int i = 0; i < n; i++) {
             if (arr[i] > memo[len]) {
