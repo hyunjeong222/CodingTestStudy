@@ -5,64 +5,57 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int[] lis;
     static int n;
     static int[] arr, memo;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-
-        int[] arr = new int[n];
+        n = Integer.parseInt(br.readLine());
+        arr = new int[n];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i=0; i<n; i++) {
+        for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        lis = new int[n+1];  // 0~i의 arr의 원소배열 중 LIS의 길이가 len인 부분수열들의 마지막 값 중 최솟값
-        lis[0] = -1_000_000_001;
+        int len = 0, idx = 0;
+        memo = new int[n+1];
+        memo[0] = -1000000001;
         int[] dp = new int[n]; // 증가 부분 수열 크기 저장
-        int len =0;
-        int idx =0;
-        for(int i=0; i<n; i++) {
-            if(arr[i] > lis[len]) {
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > memo[len]) {
                 dp[i] = ++len;
-                lis[len] =arr[i];
-
-            }else {
+                memo[len] = arr[i];
+            } else {
                 idx = binarySearch(0, len, arr[i]);
-                lis[idx] = arr[i];
+                memo[idx] = arr[i];
                 dp[i] = idx;
             }
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(len+"\n");
+        sb.append(len).append("\n");
 
-        Stack<Integer> s = new Stack<>();
-        for(int i=n-1; i>=0; i--) {
-            if(dp[i] == len) {
-                s.push(arr[i]);
+        Stack<Integer> stack = new Stack<>();
+        for (int i = n-1; i >= 0; i--) {
+            if (dp[i] == len) {
+                stack.push(arr[i]);
                 len--;
             }
         }
 
-        while(!s.isEmpty()) {
-            sb.append(s.pop()+" ");
+        while (!stack.empty()) {
+            sb.append(stack.pop()).append(" ");
         }
-        System.out.println(sb.toString());
 
+        System.out.println(sb);
     }
 
-    static int binarySearch(int left, int right, int key) {
-        int mid =0;
-        while(left < right) {
-            mid = (left+right)/2;
+    private static int binarySearch(int left, int right, int target) {
+        while (left < right) {
+            int mid = left + (right-left) / 2;
 
-            if(lis[mid] < key) {
+            if (memo[mid] < target) {
                 left = mid+1;
-            }else {
-                right = mid;
-            }
+            } else right = mid;
         }
         return right;
     }
