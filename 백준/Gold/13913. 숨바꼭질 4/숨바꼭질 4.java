@@ -1,72 +1,75 @@
-import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main {
     static int n, k;
-    static int[] checked;
-    static int[] before; // 이동 전 위치 저장
-    static int size = 100001;
-    static int ans; // 동생을 찾는 가장 빠른 시간
+    static boolean[] checked;
+    static int[] before;
+    static public class Pos {
+        int x; int time;
+        public Pos(int x, int time) {
+            this.x = x; this.time = time;
+        }
+    }
+    static int ans;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
-        n = Integer.parseInt(st.nextToken()); // 수빈이의 현재 위치
+        n = Integer.parseInt(st.nextToken()); // 수빈이의 위치
         k = Integer.parseInt(st.nextToken()); // 동생의 위치
 
-        checked = new int[size];
-        before = new int[size];
-
-        ans = bfs(n);
-        bw.append(ans + "\n");
+        checked = new boolean[100001];
+        before = new int[100001];
 
         StringBuilder sb = new StringBuilder();
+        bfs(n);
+
+        sb.append(ans).append("\n");
+
         Stack<Integer> stack = new Stack<>();
+        stack.push(k);
         int idx = k;
         while (idx != n) {
-            stack.push(idx);
+            stack.push(before[idx]);
             idx = before[idx];
         }
-        stack.push(idx);
         while (!stack.isEmpty()) {
-            sb.append(stack.pop() + " ");
+            sb.append(stack.pop()).append(" ");
         }
-        bw.append(sb + "\n");
-        bw.flush();
-        bw.close();
-        br.close();
+
+        System.out.println(sb.toString());
     }
 
-    private static int bfs(int x) {
-        Queue<Integer> que = new LinkedList<>();
-        que.offer(x);
-        checked[x] = 1;
+    private static void bfs(int n) {
+        Queue<Pos> que = new LinkedList<>();
+        que.offer(new Pos(n, 0));
+        checked[n] = true;
 
+        int next;
         while (!que.isEmpty()) {
-            x = que.poll();
-            if (x == k) return checked[x]-1;
+            Pos now = que.poll();
 
-            if (x-1 >= 0 && checked[x-1] == 0) {
-                checked[x-1] = checked[x]+1;
-                que.offer(x-1);
-                before[x-1] = x;
+            if (now.x == k) {
+                ans = now.time;
+                return;
             }
-            if (x+1 < size && checked[x+1] == 0) {
-                checked[x+1] = checked[x]+1;
-                que.offer(x+1);
-                before[x+1] = x;
-            }
-            if (x*2 < size && checked[x*2] == 0) {
-                checked[x*2] = checked[x]+1;
-                que.offer(x*2);
-                before[x*2] = x;
+
+            for (int i = 0; i < 3; i++) {
+                if (i == 0) next = now.x*2;
+                else if (i == 1) next = now.x-1;
+                else next = now.x+1;
+
+                if (rangeCheck(next) || checked[next]) continue;
+                que.offer(new Pos(next, now.time+1));
+                checked[next] = true;
+                before[next] = now.x;
             }
         }
+    }
 
-        return -1;
+    private static boolean rangeCheck(int next) {
+        return next < 0 || next >= 100001;
     }
 }
