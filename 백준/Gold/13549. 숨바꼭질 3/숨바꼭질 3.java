@@ -1,60 +1,66 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
     static int n, k;
-    static int size = 100001;
     static boolean[] checked;
-    static int ans = Integer.MAX_VALUE;
-    static public class pos {
-        int idx;
-        int time;
-        public pos(int idx, int time) {
-            this.idx = idx;
-            this.time = time;
+    static public class Pos {
+        int x; int time;
+        public Pos (int x, int time) {
+            this.x = x; this.time = time;
         }
     }
+    static int ans;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken()); // 수빈이의 위치
+        k = Integer.parseInt(st.nextToken()); // 동생의 위치
 
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
-
-        checked = new boolean[size];
+        checked = new boolean[100001];
 
         bfs(n);
-        bw.append(ans + "\n");
-        bw.flush();
-        bw.close();
-        br.close();
+        System.out.println(ans);
     }
 
-    private static void bfs(int x) {
-        Queue<pos> que = new LinkedList<>();
-        que.offer(new pos(x, 0)); // 수빈이의 현재 위치, time
-        checked[x] = true;
+    private static void bfs(int n) {
+        Queue<Pos> que = new LinkedList<>();
+        que.offer(new Pos(n, 0));
+        checked[n] = true;
 
+        int next, time;
         while (!que.isEmpty()) {
-            pos now = que.poll();
+            Pos now = que.poll();
 
-            if (now.idx == k) ans = Math.min(ans, now.time);
+            if (now.x == k) {
+                ans = now.time;
+                return;
+            }
 
-            if (now.idx*2 < size && !checked[now.idx*2]) {
-                que.offer(new pos(now.idx*2, now.time));
-                checked[now.idx*2] = true;
-            }
-            if (now.idx-1 >= 0 && !checked[now.idx-1]) {
-                que.offer(new pos(now.idx-1, now.time+1));
-                checked[now.idx-1] = true;
-            }
-            if (now.idx+1 < size && !checked[now.idx+1]) {
-                que.offer(new pos(now.idx+1, now.time+1));
-                checked[now.idx+1] = true;
+            for (int i = 0; i < 3; i++) {
+                if (i == 0) {
+                    next = now.x*2;
+                    time = now.time;
+                } else if (i == 1) {
+                    next = now.x-1;
+                    time = now.time+1;
+                } else {
+                    next = now.x+1;
+                    time = now.time+1;
+                }
+
+                if (rangeCheck(next) || checked[next]) continue;
+                checked[next] = true;
+                que.offer(new Pos(next, time));
             }
         }
+    }
+
+    private static boolean rangeCheck(int next) {
+        return next < 0 || next >= 100001;
     }
 }
