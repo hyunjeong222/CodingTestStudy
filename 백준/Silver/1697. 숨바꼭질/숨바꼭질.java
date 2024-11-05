@@ -19,7 +19,12 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken()); // 수빈이 위치
         k = Integer.parseInt(st.nextToken()); // 동생의 위치
-
+        
+        if (n >= k) { // 수빈이가 동생보다 앞에 있다면 뒤로 가는 방법만 존재
+            System.out.println(n-k);
+            System.exit(0);
+        }
+        
         int ans = bfs(n);
         System.out.println(ans);
 
