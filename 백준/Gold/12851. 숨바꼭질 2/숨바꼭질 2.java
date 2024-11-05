@@ -1,4 +1,6 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -6,62 +8,62 @@ import java.util.StringTokenizer;
 public class Main {
     static int n, k;
     static int[] checked;
-    static int size = 100001;
-    static int ans = Integer.MAX_VALUE;
-    static int cnt;
+    static int ans = Integer.MAX_VALUE, cnt;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
         n = Integer.parseInt(st.nextToken()); // 수빈이의 위치
         k = Integer.parseInt(st.nextToken()); // 동생의 위치
 
-        checked = new int[size];
+        checked = new int[100001];
 
-        // 수빈이가 더 앞에 있는 경우
-        // 뒤로 가는 경우만 존재
-        if (n >= k) bw.append(n-k + "\n" + 1);
-        else {
-            bfs(n);
-            bw.append(ans + "\n" + cnt);
+        StringBuilder sb = new StringBuilder();
+        if (n >= k) {
+            sb.append(n-k).append("\n").append(1);
+            System.out.println(sb.toString());
+            return;
         }
-        bw.flush();
-        bw.close();
-        br.close();
+
+        bfs(n);
+        sb.append(ans).append("\n").append(cnt);
+        System.out.println(sb.toString());
     }
 
-    private static int bfs(int x) {
+    private static void bfs(int n) {
         Queue<Integer> que = new LinkedList<>();
-        que.offer(x);
-        checked[x] = 1;
+        que.offer(n);
+        checked[n] = 1;
 
+        int next;
         while (!que.isEmpty()) {
-            x = que.poll();
-
-            // 최소보다 시간이 더 오래걸리면 비교할 필요 없음
-            if (ans < checked[x]) continue;
+            int now = que.poll();
+            
+            // 더 오래걸린다면 비교 X
+            if (ans < checked[now]) continue;
 
             for (int i = 0; i < 3; i++) {
-                int next;
-
-                if (i == 0) next = x - 1;
-                else if (i == 1) next = x + 1;
-                else next = x * 2;
+                if (i == 0) next = now-1;
+                else if (i == 1) next = now+1;
+                else next = now*2;
 
                 if (next == k) {
-                    ans = checked[x];
+                    ans = checked[now];
                     cnt++;
                 }
 
-                if (next < 0 || next >= checked.length) continue;
-
-                if (checked[next] == 0 || checked[next] == checked[x]+1) {
+                if (rangeCheck(next)) continue;
+                // 첫 방문이거나
+                // 이미 방문한 곳이라도 같은 시간에 방문했다면
+                // 경우의 수 추가 가능성 ㅇ
+                if (checked[next] == 0 || checked[next] == checked[now]+1) {
+                    checked[next] = checked[now]+1;
                     que.offer(next);
-                    checked[next] = checked[x]+1;
                 }
             }
         }
-        return -1;
+    }
+
+    private static boolean rangeCheck(int next) {
+        return next < 0 || next >= 100001;
     }
 }
