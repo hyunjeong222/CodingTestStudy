@@ -7,11 +7,11 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int n, m;
-    static ArrayList<Pos> list;
+    static ArrayList<ArrayList<Pos>> list;
     static public class Pos {
-        int u; int v; int w;
-        public Pos(int u, int v, int w) {
-            this.u = u; this.v = v; this.w = w;
+        int end; int cost;
+        public Pos (int end, int cost) {
+            this.end = end; this.cost = cost;
         }
     }
     static long[] dist;
@@ -23,6 +23,9 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
 
         list = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            list.add(new ArrayList<>());
+        }
 
         dist = new long[n+1];
         Arrays.fill(dist, INF);
@@ -34,13 +37,13 @@ public class Main {
             v = Integer.parseInt(st.nextToken());
             w = Integer.parseInt(st.nextToken());
 
-            list.add(new Pos(u, v, w));
+            list.get(u).add(new Pos(v, w));
         }
 
         boolean flag = BellmanFord(1);
 
         StringBuilder sb = new StringBuilder();
-        if (!flag) {
+        if (flag) {
             sb.append(-1).append("\n");
         } else {
             for (int i = 2; i <= n; i++) {
@@ -54,27 +57,32 @@ public class Main {
 
     private static boolean BellmanFord(int start) {
         dist[start] = 0;
-        for (int i = 0; i < n; i++) { // 정점의 개수
-            for (int j = 0; j < m; j++) { // 간선의 개수
-                Pos now = list.get(j); // 현재 간선
+        boolean isUpdate = false;
 
-                // 현재 간선의 들어오는 정점에 대해 비교
-                if (dist[now.u] != INF && dist[now.v] > dist[now.u] + now.w) {
-                    dist[now.v] = dist[now.u] + now.w;
+        for (int i = 1; i < n; i++) {
+            isUpdate = false;
+            for (int j = 1; j <= n; j++) {
+                for (Pos now : list.get(j)) {
+                    if (dist[j] != INF && dist[now.end] > dist[j] + now.cost) {
+                        dist[now.end] = dist[j] + now.cost;
+                        isUpdate = true;
+                    }
+                }
+            }
+
+            if (!isUpdate) break;
+        }
+
+        if (isUpdate) {
+            for (int i = 1; i <= n; i++) {
+                for (Pos now : list.get(i)) {
+                    if (dist[i] != INF && dist[now.end] > dist[i] + now.cost) {
+                        return true;
+                    }
                 }
             }
         }
 
-        // 음의 가중치 확인
-        for (int i = 0; i < m; i++) {
-            Pos now = list.get(i); // 현재 간선
-
-            // 현재 간선의 들어오는 정점에 대해 비교 -> 더 작은 값 생기면 음수 사이클 존재
-            if (dist[now.u] != INF && dist[now.v] > dist[now.u] + now.w) {
-                return false;
-            }
-        }
-
-        return true;
+        return false;
     }
 }
