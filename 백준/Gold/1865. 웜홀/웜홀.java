@@ -48,16 +48,9 @@ public class Main {
             }
 
             dist = new int[n+1];
-            boolean flag = false;
-            for (int i = 1; i <= n; i++) { // 어떠한 한 지점에서 탐색
-                if (BellmanFord(i)) { // 음수 사이클 ㅇ
-                    flag = true;
-                    sb.append("YES").append("\n");
-                    break;
-                }
-            }
-
-            if (!flag) sb.append("NO").append("\n");
+            boolean flag = BellmanFord(1);
+            if (flag) sb.append("YES").append("\n");
+            else sb.append("NO").append("\n");
         }
 
         System.out.println(sb.toString());
@@ -74,7 +67,7 @@ public class Main {
             // 최단거리 초기화
             for (int j = 1; j <= n; j++) {
                 for (Pos now : list.get(j)) {
-                    if (dist[j] != INF && dist[now.end] > dist[j] + now.cost) {
+                    if (dist[now.end] > dist[j] + now.cost) {
                         dist[now.end] = dist[j] + now.cost;
                         isUpdate = true;
                     }
@@ -88,7 +81,7 @@ public class Main {
         if (isUpdate) {
             for (int i = 1; i <= n; i++) {
                 for (Pos now : list.get(i)) {
-                    if (dist[i] != INF && dist[now.end] > dist[i] + now.cost) {
+                    if (dist[now.end] > dist[i] + now.cost) {
                         return true;
                     }
                 }
