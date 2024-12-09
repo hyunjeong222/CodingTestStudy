@@ -17,14 +17,15 @@ public class Main {
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
             a = Integer.parseInt(st.nextToken());
-            if (pq.isEmpty() && a == 0) {
-                sb.append(-1).append("\n");
-            } else if (!pq.isEmpty() && a == 0) {
-                sb.append(pq.poll()).append("\n");
-            } else {
-                for (int j = 0; j < a; j++) {
-                    pq.offer(Integer.parseInt(st.nextToken()));
+            if (a == 0) {
+                if (pq.isEmpty()) {
+                    sb.append(-1).append("\n");
+                } else {
+                    sb.append(pq.poll()).append("\n");
                 }
+            }
+            for (int j = 0; j < a; j++) {
+                pq.offer(Integer.parseInt(st.nextToken()));
             }
         }
 
