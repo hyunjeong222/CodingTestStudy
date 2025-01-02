@@ -5,11 +5,7 @@ import java.util.*;
 
 public class Main {
     static int n;
-    static int sx, sy, ex, ey;
     static ArrayList<Pos>[] arr;
-    static int[] dist;
-    static boolean[] isPrime;
-    static PriorityQueue<Pos> pq;
     static public class Pos implements Comparable<Pos> {
         int end; int dist;
         public Pos (int end, int dist) {
@@ -25,7 +21,8 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         // 에라스토테네스의 체
-        isPrime = new boolean[12001];
+        // 소수 X true, 소수 O false
+        boolean[] isPrime = new boolean[12001];
         isPrime[0] = isPrime[1] = true;
         for (int i = 2; i <= Math.sqrt(12000); i++) {
             if (!isPrime[i]) {
@@ -36,12 +33,14 @@ public class Main {
         }
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        sx = Integer.parseInt(st.nextToken());
-        sy = Integer.parseInt(st.nextToken());
-        ex = Integer.parseInt(st.nextToken());
-        ey = Integer.parseInt(st.nextToken());
+        // 소수 마을의 위치
+        int sx = Integer.parseInt(st.nextToken());
+        int sy = Integer.parseInt(st.nextToken());
+        // A 마을의 위치
+        int ex = Integer.parseInt(st.nextToken());
+        int ey = Integer.parseInt(st.nextToken());
 
-        n = Integer.parseInt(br.readLine())+2;
+        n = Integer.parseInt(br.readLine())+2; // 경유할 수 있는 마을의 개수 + 시작점과 도착점
 
         arr = new ArrayList[n];
         for (int i = 0; i < n; i++) {
@@ -50,7 +49,7 @@ public class Main {
 
         ArrayList<int[]> list = new ArrayList<>();
         list.add(new int[]{sx, sy}); // 시작점
-        for (int i = 1; i < n-1; i++) {
+        for (int i = 0; i < n-2; i++) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
@@ -58,12 +57,13 @@ public class Main {
         }
         list.add(new int[]{ex, ey}); // 도착점
 
+        // 모든 정점 간의 길이 구하기 - 소수인 경우만 연결
         for (int i = 0; i < list.size(); i++) {
             for (int j = i+1; j < list.size(); j++) {
                 int cost = (int)(Math.sqrt(Math.pow(list.get(i)[0] - list.get(j)[0], 2)
                         + Math.pow(list.get(i)[1] - list.get(j)[1], 2)));
 
-                if (isPrime[cost]) continue;
+                if (isPrime[cost]) continue; // 소수 X
 
                 arr[i].add(new Pos(j, cost));
                 arr[j].add(new Pos(i, cost));
@@ -76,10 +76,10 @@ public class Main {
     }
 
     private static int dijkstra() {
-        dist = new int[n];
+        int[] dist = new int[n];
         Arrays.fill(dist, INF);
 
-        pq = new PriorityQueue<>();
+        PriorityQueue<Pos> pq = new PriorityQueue<>();
         pq.offer(new Pos(0, 0));
         dist[0] = 0;
 
@@ -88,12 +88,16 @@ public class Main {
 
             if (now.dist > dist[now.end]) continue;
 
+            // 도착점이라면 거리 리턴
             if (now.end == n-1) return dist[n-1];
 
-            for (Pos next : arr[now.end]) {
-                if (dist[next.end] > dist[now.end] + next.dist) {
-                    dist[next.end] = dist[now.end] + next.dist;
-                    pq.offer(new Pos(next.end, dist[next.end]));
+            for (int i = 0; i < arr[now.end].size(); i++) {
+                int nextEnd = arr[now.end].get(i).end;
+                int nextDist = arr[now.end].get(i).dist;
+
+                if (dist[nextEnd] > dist[now.end] + nextDist) {
+                    dist[nextEnd] = dist[now.end] + nextDist;
+                    pq.offer(new Pos(nextEnd, dist[nextEnd]));
                 }
             }
         }
