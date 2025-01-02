@@ -6,7 +6,7 @@ import java.util.*;
 public class Main {
     static int n;
     static int sx, sy, ex, ey;
-    static ArrayList<Pos> list;
+    static ArrayList<Pos>[] arr;
     static int[] dist;
     static boolean[] isPrime;
     static PriorityQueue<Pos> pq;
@@ -23,14 +23,14 @@ public class Main {
     static final int INF = 987654321;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         // 에라스토테네스의 체
         isPrime = new boolean[12001];
-        Arrays.fill(isPrime, true);
-        isPrime[0] = isPrime[1] = false;
+        isPrime[0] = isPrime[1] = true;
         for (int i = 2; i <= Math.sqrt(12000); i++) {
-            if (isPrime[i]) {
+            if (!isPrime[i]) {
                 for (int j = i*i; j <= 12000; j += i) {
-                    isPrime[j] = false;
+                    isPrime[j] = true;
                 }
             }
         }
@@ -41,26 +41,42 @@ public class Main {
         ex = Integer.parseInt(st.nextToken());
         ey = Integer.parseInt(st.nextToken());
 
-        list = new ArrayList<>();
-        list.add(new Pos(sx, sy)); // 시작점
-        n = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine())+2;
+
+        arr = new ArrayList[n];
         for (int i = 0; i < n; i++) {
+            arr[i] = new ArrayList<>();
+        }
+
+        ArrayList<int[]> list = new ArrayList<>();
+        list.add(new int[]{sx, sy}); // 시작점
+        for (int i = 1; i < n-1; i++) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
-            list.add(new Pos(u, v));
+            list.add(new int[]{u, v});
+        }
+        list.add(new int[]{ex, ey}); // 도착점
+
+        for (int i = 0; i < list.size(); i++) {
+            for (int j = i+1; j < list.size(); j++) {
+                int cost = (int)(Math.sqrt(Math.pow(list.get(i)[0] - list.get(j)[0], 2)
+                        + Math.pow(list.get(i)[1] - list.get(j)[1], 2)));
+
+                if (isPrime[cost]) continue;
+
+                arr[i].add(new Pos(j, cost));
+                arr[j].add(new Pos(i, cost));
+            }
         }
 
-        list.add(new Pos(ex, ey)); // 도착점
+        int ans = dijkstra();
 
-        dijkstra();
-
-        System.out.println(dist[n+1] == INF ? "-1" : dist[n+1]);
-
+        System.out.println(ans);
     }
 
-    private static void dijkstra() {
-        dist = new int[n+2];
+    private static int dijkstra() {
+        dist = new int[n];
         Arrays.fill(dist, INF);
 
         pq = new PriorityQueue<>();
@@ -72,24 +88,16 @@ public class Main {
 
             if (now.dist > dist[now.end]) continue;
 
-            dist[now.end] = now.dist;
+            if (now.end == n-1) return dist[n-1];
 
-            int nextEnd = list.get(now.end).end;
-            int nextDist = list.get(now.end).dist;
-
-            for(int i = 0; i < list.size(); i++) {
-                if (i == now.end) continue;
-
-                int l = getDistance(nextEnd, nextDist, list.get(i).end, list.get(i).dist);
-
-                if (!isPrime[l] || now.dist+l >= dist[i] || now.dist+l >= dist[n+1]) continue;
-
-                pq.offer(new Pos(i, now.dist+l));
+            for (Pos next : arr[now.end]) {
+                if (dist[next.end] > dist[now.end] + next.dist) {
+                    dist[next.end] = dist[now.end] + next.dist;
+                    pq.offer(new Pos(next.end, dist[next.end]));
+                }
             }
         }
-    }
 
-    private static int getDistance(double sx, double sy, double ex, double ey) {
-        return (int)(Math.sqrt(Math.pow(sx-ex, 2) + Math.pow(sy-ey, 2)));
+        return -1;
     }
 }
