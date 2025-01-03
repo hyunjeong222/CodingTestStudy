@@ -7,9 +7,9 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static final int INF = Integer.MAX_VALUE;
     static int v, e;
     static ArrayList<ArrayList<Pos>> list;
+    static PriorityQueue<Pos> pq;
     static public class Pos implements Comparable<Pos> {
         int end; int dist;
         public Pos (int end, int dist) {
@@ -20,11 +20,12 @@ public class Main {
             return this.dist - o.dist;
         }
     }
+    static final int INF = Integer.MAX_VALUE;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        v = Integer.parseInt(st.nextToken());
-        e = Integer.parseInt(st.nextToken());
+        v = Integer.parseInt(st.nextToken()); // 정점의 개수
+        e = Integer.parseInt(st.nextToken()); // 도로의 개수
 
         list = new ArrayList<>();
         for (int i = 0; i <= v; i++) {
@@ -42,11 +43,6 @@ public class Main {
             list.get(v).add(new Pos(u, w));
         }
 
-        // i번째 지점까지 오는데 소요되는 시간
-        long[] yogurtCome = new long[10];
-        Arrays.fill(yogurtCome, Long.MAX_VALUE);
-        yogurtCome[0] = 0;
-
         // 야쿠르트 아줌마가 방문하는 순서
         int[] yogurtNode = new int[10];
         st = new StringTokenizer(br.readLine());
@@ -54,48 +50,54 @@ public class Main {
             yogurtNode[i] = Integer.parseInt(st.nextToken());
         }
 
-        // 이동 가능한 경로가 없다면 그 다음으로 넘어가야 함
+        // i번째 지점까지 오는데 소요되는 시간
+        long[] yogurtCome = new long[10];
+        Arrays.fill(yogurtCome, Long.MAX_VALUE);
+        yogurtCome[0] = 0;
+
         int cur = yogurtNode[0];
         int curIdx = 0;
         for (int i = 1; i < 10; i++) {
             int next = yogurtNode[i];
-            int minCost = dijkstra(cur)[next];
+            // 현재 노드에서 다음 노드까지의 최소거리
+            int minDist = dijkstra(cur)[next];
 
-            if (minCost == INF) continue; // 이동 가능한 경로 X
+            // 이동 경로가 없다면 그 다음 정점으로
+            if (minDist == INF) continue;
 
-            yogurtCome[i] = minCost + yogurtCome[curIdx]; // 이전 방문 시간까지 같이 누적
+            // 이전 방문시간까지 같이 누적
+            yogurtCome[i] = minDist + yogurtCome[curIdx];
+
             cur = next;
             curIdx = i;
         }
 
-        int myStart = Integer.parseInt(br.readLine());
+        int myStart = Integer.parseInt(br.readLine()); // 내가 출발하는 정점 번호
         int[] myDist = dijkstra(myStart);
 
-        int ans = Integer.MAX_VALUE;
+        int ans = INF;
         for (int i = 0; i < 10; i++) {
-            int curNode = yogurtNode[i];
-            // 아줌마가 i번째 지점으로 올 수 있고,
-            // 내가 더 빨리 도착하는 경우
-            if (yogurtCome[i] != Long.MAX_VALUE && myDist[curNode] <= yogurtCome[i]) {
-                ans = Math.min(ans, curNode);
+            cur = yogurtNode[i];
+            if (yogurtCome[i] != Long.MAX_VALUE && myDist[cur] <= yogurtCome[i]) {
+                ans = Math.min(ans, cur);
             }
         }
 
         System.out.println(ans == INF ? -1 : ans);
     }
 
-    private static int[] dijkstra(int start) {
+    private static int[] dijkstra(int cur) {
         int[] dist = new int[v+1];
         Arrays.fill(dist, INF);
 
-        PriorityQueue<Pos> pq = new PriorityQueue<>();
-        pq.offer(new Pos(start, 0));
-        dist[start] = 0;
+        pq = new PriorityQueue<>();
+        pq.offer(new Pos(cur, 0));
+        dist[cur] = 0;
 
         while (!pq.isEmpty()) {
             Pos now = pq.poll();
 
-            if (dist[now.end] < now.dist) continue;
+            if (now.dist > dist[now.end]) continue;
 
             for (Pos next : list.get(now.end)) {
                 if (dist[next.end] > dist[now.end] + next.dist) {
