@@ -59,6 +59,14 @@ public class Main {
         System.out.println(ans);
     }
 
+    private static void marking(int x1, int y1, int x2, int y2, int mark) {
+        for (int i = Math.min(x1, x2); i <= Math.max(x1, x2); i++) {
+            for (int j = Math.min(y1, y2); j <= Math.max(y1, y2); j++) {
+                map[i][j] = mark;
+            }
+        }
+    }
+
     private static int dijkstra() {
         int[][] dist = new int[501][501];
         for (int[] row : dist) Arrays.fill(row, INF);
@@ -89,14 +97,6 @@ public class Main {
     }
 
     private static boolean rangeCheck(int x, int y) {
-        return x < 0 || x > 500 || y < 0 || y > 500;
-    }
-
-    private static void marking(int x1, int y1, int x2, int y2, int mark) {
-        for (int i = Math.min(x1, x2); i <= Math.max(x1, x2); i++) {
-            for (int j = Math.min(y1, y2); j <= Math.max(y1, y2); j++) {
-                map[i][j] = mark;
-            }
-        }
+        return x < 0 || x >= 501 || y < 0 || y >= 501;
     }
 }
