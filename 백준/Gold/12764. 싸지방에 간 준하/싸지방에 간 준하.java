@@ -6,78 +6,65 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main{
-    public static class Node implements Comparable<Node>{
-        int start;
-        int end;
-        public Node(int start, int end){
-            this.start = start;
-            this.end = end;
+public class Main {
+    static public class Time implements Comparable<Time> {
+        int start; int end;
+        public Time (int start, int end) {
+            this.start = start; this.end = end;
         }
-
         @Override
-        public int compareTo(Node o){
-
+        public int compareTo(Time o) {
             return this.start - o.start;
         }
     }
-
-    public static class PQNode implements Comparable<PQNode>{
-        int end;
-        int idx;
-        public PQNode(int end, int idx){
-            this.end = end;
-            this.idx = idx;
+    static public class Pos implements Comparable<Pos> {
+        int end; int idx;
+        public Pos (int end, int idx) {
+            this.end = end; this.idx = idx;
         }
-
-
         @Override
-        public int compareTo(PQNode o) {
+        public int compareTo(Pos o) {
             return this.end - o.end;
         }
     }
-
-
-    public static ArrayList<Node> list;
-    public static int[] room = new int[100001];
-    public static int n;
-    public static int cnt = 0;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = null;
-
-        n = Integer.parseInt(br.readLine());
-        list = new ArrayList<>();
-
-        for(int i=0;i<n;i++){
-            st = new StringTokenizer(br.readLine(), " ");
-            list.add(new Node(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+        int n = Integer.parseInt(br.readLine());
+        ArrayList<Time> list = new ArrayList<>();
+        StringTokenizer st;
+        for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
+            list.add(new Time(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
         }
         Collections.sort(list);
-        PriorityQueue<PQNode> pq = new PriorityQueue<>();
-        PriorityQueue<Integer> idx = new PriorityQueue<>();
 
-        for (Node node:list){
+        int cnt = 0; // 컴퓨터의 최소 개수
+        int[] room = new int[100001]; // 각 자리를 사용한 사람의 수
 
-            while (!pq.isEmpty() && pq.peek().end < node.start){
-                idx.add(pq.poll().idx);
+        PriorityQueue<Pos> pq = new PriorityQueue<>(); // 활성화 된 방
+        PriorityQueue<Integer> idx = new PriorityQueue<>(); // 비활성화 된 방
+
+        for (Time now : list) {
+            while (!pq.isEmpty() && pq.peek().end < now.start) {
+                idx.offer(pq.poll().idx);
             }
 
-
-            if(!idx.isEmpty()){
+            if (!idx.isEmpty()) {
                 Integer i = idx.poll();
                 room[i] += 1;
-                pq.add(new PQNode(node.end, i));
+                pq.offer(new Pos(now.end, i));
             } else {
                 cnt++;
                 room[cnt] += 1;
-                pq.add(new PQNode(node.end, cnt));
+                pq.offer(new Pos(now.end, cnt));
             }
         }
 
-        System.out.println(cnt);
-        for(int i=1;i<=cnt;i++){
-            System.out.print(room[i]+" ");
+        StringBuilder sb = new StringBuilder();
+        sb.append(cnt).append("\n");
+        for (int i = 1; i <= cnt; i++) {
+            sb.append(room[i]).append(" ");
         }
+        System.out.println(sb.toString());
     }
 }
