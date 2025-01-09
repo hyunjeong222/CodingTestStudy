@@ -9,7 +9,7 @@ import java.util.StringTokenizer;
 public class Main {
     static public class Time implements Comparable<Time> {
         int start; int end;
-        public Time (int start, int end) {
+        public Time(int start, int end) {
             this.start = start; this.end = end;
         }
         @Override
@@ -18,9 +18,9 @@ public class Main {
         }
     }
     static public class Pos implements Comparable<Pos> {
-        int end; int idx;
-        public Pos (int end, int idx) {
-            this.end = end; this.idx = idx;
+        int idx; int end;
+        public Pos (int idx, int end) {
+            this.idx = idx; this.end = end;
         }
         @Override
         public int compareTo(Pos o) {
@@ -32,16 +32,21 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         ArrayList<Time> list = new ArrayList<>();
         StringTokenizer st;
+        int start, end; // 시작 시간, 종료 시간
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine());
-            list.add(new Time(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+            start = Integer.parseInt(st.nextToken());
+            end = Integer.parseInt(st.nextToken());
+
+            // 시작 시간이 빠른 순
+            list.add(new Time(start, end));
         }
         Collections.sort(list);
 
         int cnt = 0; // 컴퓨터의 최소 개수
         int[] room = new int[100001]; // 각 자리를 사용한 사람의 수
 
-        PriorityQueue<Pos> pq = new PriorityQueue<>(); // 활성화 된 방
+        PriorityQueue<Pos> pq = new PriorityQueue<>(); // 활성화된 방
         PriorityQueue<Integer> idx = new PriorityQueue<>(); // 비활성화 된 방
 
         for (Time now : list) {
@@ -52,11 +57,11 @@ public class Main {
             if (!idx.isEmpty()) {
                 Integer i = idx.poll();
                 room[i] += 1;
-                pq.offer(new Pos(now.end, i));
+                pq.offer(new Pos(i, now.end));
             } else {
                 cnt++;
                 room[cnt] += 1;
-                pq.offer(new Pos(now.end, cnt));
+                pq.offer(new Pos(cnt, now.end));
             }
         }
 
