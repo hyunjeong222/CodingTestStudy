@@ -1,16 +1,24 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
         long[] arr = new long[n];
         long num;
-        for (int i = 0; i < n; i++) {
-            num = sc.nextLong();
-            arr[i] = getReverse(num);
+        while (n > 0) {
+            while (st.hasMoreTokens()) {
+                num = Long.parseLong(st.nextToken());
+                arr[--n] = getReverse(num);
+            }
+            if (n > 0) {
+                st = new StringTokenizer(br.readLine());
+            }
         }
         Arrays.sort(arr);
 
