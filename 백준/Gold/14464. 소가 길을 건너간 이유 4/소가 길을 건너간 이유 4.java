@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
     static public class Pos implements Comparable<Pos> {
@@ -40,22 +42,14 @@ public class Main {
         // 몇 마리의 소가 닭에게 도움을 받을 수 있는지
         int ans = 0;;
         while (!cow.isEmpty()) {
-            boolean flag = false; // 닭에게 도움을 받을 수 있는지
+            Pos now = cow.poll();
             for (int i = 0; i < c; i++) {
-                // 소가 닭에게 도움을 받을 수 있음
-                if (cow.peek().start <= chickens[i] && chickens[i] <= cow.peek().end && chickens[i] > 0) {
-                    // 소는 닭 한마리에게만 도움받을 수 있고
-                    cow.poll();
-                    // 닭은 한번만 소를 도와줄 수 있음
+                if (now.start <= chickens[i] && chickens[i] <= now.end) {
                     chickens[i] = -1;
                     ans++;
-                    flag = true;
                     break;
                 }
             }
-
-            // 도움받을 수 없다면 지우기
-            if (!flag) cow.poll();
         }
 
         System.out.println(ans);
