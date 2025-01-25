@@ -56,15 +56,9 @@ public class Main {
     private static void dijkstra() {
         distQue = new PriorityQueue[n+1];
         // 내림차순
-        Comparator<Integer> comparator = new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return o1 < o2 ? 1 : -1;
-            }
-        };
         for (int i = 0; i <= n; i++) {
             // 최대 k개의 경로 저장
-            distQue[i] = new PriorityQueue<>(k, comparator);
+            distQue[i] = new PriorityQueue<>((o1,o2)->o2-o1);
         }
 
         PriorityQueue<Pos> pq = new PriorityQueue<>();
@@ -73,17 +67,21 @@ public class Main {
 
         while (!pq.isEmpty()) {
             Pos now = pq.poll();
+            int nowNode = now.end;
 
-            for (Pos next : list.get(now.end)) {
+            for (Pos next : list.get(nowNode)) {
+                int nextNode = next.end;
+                int nextDist = now.dist + next.dist;
+
                 // k개의 경로가 저장되지 않은 경우
-                if (distQue[next.end].size() < k) {
-                    distQue[next.end].add(now.dist + next.dist); // 새로운 경로 추가
-                    pq.offer(new Pos(next.end, now.dist + next.dist));
+                if (distQue[nextNode].size() < k) {
+                    distQue[nextNode].add(nextDist); // 새로운 경로 추가
+                    pq.offer(new Pos(nextNode, nextDist));
                 } // 기존 k번째 경로보다 더 짧은 경로인 경우
-                else if (distQue[next.end].peek() > now.dist + next.dist) {
-                    distQue[next.end].poll(); // 가장 긴 경로 제거
-                    distQue[next.end].add(now.dist + next.dist); // 새로운 경로 추가
-                    pq.offer(new Pos(next.end, now.dist + next.dist));
+                else if (distQue[nextNode].peek() > nextDist) {
+                    distQue[nextNode].poll(); // 가장 긴 경로 제거
+                    distQue[nextNode].add(nextDist); // 새로운 경로 추가
+                    pq.offer(new Pos(nextNode, nextDist));
                 }
             }
         }
