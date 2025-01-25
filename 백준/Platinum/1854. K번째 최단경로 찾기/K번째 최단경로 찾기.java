@@ -1,10 +1,15 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
-    static int n, m, k;
+    static int n, k;
+    static ArrayList<ArrayList<Pos>> list;
+    static PriorityQueue<Integer>[] distQue;
     static public class Pos implements Comparable<Pos> {
         int end; int dist;
         public Pos(int end, int dist) {
@@ -15,13 +20,11 @@ public class Main {
             return this.dist - o.dist;
         }
     }
-    static ArrayList<ArrayList<Pos>> list;
-    static PriorityQueue<Integer>[] distQue;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken()); // 도시의 개수
-        m = Integer.parseInt(st.nextToken()); // 도로의 수
+        int m = Integer.parseInt(st.nextToken()); // 도로의 수
         k = Integer.parseInt(st.nextToken()); // k번째 최단경로
 
         list = new ArrayList<>();
@@ -45,7 +48,7 @@ public class Main {
         for (int i = 1; i <= n; i++) {
             if (distQue[i].size() == k) {
                 sb.append(distQue[i].peek()).append("\n");
-            } else sb.append(-1).append("\n"); //k번째 경로 존재하지 않으면 -1
+            } else sb.append(-1).append("\n"); // k번째 경로 존재하지 않으면 -1
         }
         System.out.println(sb);
     }
@@ -60,7 +63,7 @@ public class Main {
             }
         };
         for (int i = 0; i <= n; i++) {
-            // 최대 k개의 값을 내림차순으로 정렬
+            // 최대 k개의 경로 저장
             distQue[i] = new PriorityQueue<>(k, comparator);
         }
 
@@ -72,12 +75,14 @@ public class Main {
             Pos now = pq.poll();
 
             for (Pos next : list.get(now.end)) {
+                // k개의 경로가 저장되지 않은 경우
                 if (distQue[next.end].size() < k) {
-                    distQue[next.end].add(now.dist + next.dist);
+                    distQue[next.end].add(now.dist + next.dist); // 새로운 경로 추가
                     pq.offer(new Pos(next.end, now.dist + next.dist));
-                } else if (distQue[next.end].peek() > now.dist + next.dist) {
-                    distQue[next.end].poll();
-                    distQue[next.end].add(now.dist + next.dist);
+                } // 기존 k번째 경로보다 더 짧은 경로인 경우
+                else if (distQue[next.end].peek() > now.dist + next.dist) {
+                    distQue[next.end].poll(); // 가장 긴 경로 제거
+                    distQue[next.end].add(now.dist + next.dist); // 새로운 경로 추가
                     pq.offer(new Pos(next.end, now.dist + next.dist));
                 }
             }
