@@ -12,11 +12,11 @@ public class Main {
         for (int i = 0; i < n; i++) {
             date[i] = Integer.parseInt(st.nextToken());
         }
-        Arrays.sort(date, Comparator.reverseOrder());
+        Arrays.sort(date);
+        int max = 0;
         for (int i = 0; i < n; i++) {
-            date[i] = (i+1)+date[i];
+            max = Math.max(max, date[i] - i);
         }
-        Arrays.sort(date, Comparator.reverseOrder());
-        System.out.println(date[0]+1);
+        System.out.println(max+n+1);
     }
 }
