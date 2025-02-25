@@ -30,6 +30,7 @@ public class Main {
 
         // 오름차순을 만들 수 있음
         StringBuilder sb = new StringBuilder();
+        sb.append("YES").append("\n").append(k).append("\n");
 
         int cnt = lisCnt;
         int[] lis = new int[n];
@@ -40,8 +41,6 @@ public class Main {
                 cnt--;
             }
         }
-
-        sb.append("YES").append("\n").append(k).append("\n");
 
         cnt = lisCnt;
         for (int i = n-1; i >= 0; i--) {
@@ -65,8 +64,9 @@ public class Main {
 
         Arrays.fill(lis, INF);
         lis[0] = 0;
+        
         for (int i = 0; i < n; i++) {
-            idx = binarySearch(len+1, arr[i], lis);
+            idx = binarySearch(0, len+1, arr[i], lis);
             lis[idx] = arr[i];
             length[i] = idx;
             len = Math.max(len, idx);
@@ -75,8 +75,7 @@ public class Main {
         return len;
     }
 
-    private static int binarySearch(int end, int target, int[] lis) {
-        int start = 0;
+    private static int binarySearch(int start, int end, int target, int[] lis) {
         int mid;
         while (start < end) {
             mid = start + (end - start) / 2;
