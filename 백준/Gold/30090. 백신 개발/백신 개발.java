@@ -3,27 +3,29 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
+    static final int INF = 100;
     static int n, minLength;
+    static String[] word;
     static boolean[] checked;
-    static String[] list;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
-        list = new String[n];
+        word = new String[n];
 
         for (int i = 0; i < n; i++) {
-            list[i] = br.readLine();
+            word[i] = br.readLine();
         }
 
-        minLength = Integer.MAX_VALUE;
-        checked = new boolean[n];
+        minLength = INF;
 
-        dfs("", 0);
+        checked = new boolean[n];
+        dfs(0, "", 0);
+
         System.out.println(minLength);
     }
 
-    private static void dfs(String current, int depth) {
-        if (depth == n) {
+    private static void dfs(int cnt, String current, int depth) {
+        if (cnt == n) {
             minLength = Math.min(minLength, current.length());
             return;
         }
@@ -31,25 +33,24 @@ public class Main {
         for (int i = 0; i < n; i++) {
             if (!checked[i]) {
                 checked[i] = true;
-                dfs(merge(current, list[i]), depth + 1);
+                int idx = getMatchedIdx(current, word[i]);
+                dfs(cnt+1, current+word[i].substring(idx), depth+1);
                 checked[i] = false;
             }
         }
     }
 
-    private static String merge(String current, String word) {
-        if (current.isEmpty()) return word;
-
+    private static int getMatchedIdx(String current, String word) {
         int cLen = current.length();
         int wLen = word.length();
-        int maxOverlap = 0;
+        int min = Math.min(cLen, wLen);
 
-        for (int k = 1; k <= Math.min(cLen, wLen); k++) {
-            if (current.substring(cLen - k).equals(word.substring(0, k))) {
-                maxOverlap = k;
+        for (int i = min; i >= 1; i--) {
+            if (current.substring(cLen - i).equals(word.substring(0, i))) {
+                return i;
             }
         }
 
-        return current + word.substring(maxOverlap);
+        return 0;
     }
 }
