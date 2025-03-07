@@ -1,38 +1,37 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class Main {
     static int n, minLength;
     static boolean[] checked;
-    static ArrayList<String> list;
+    static String[] list;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
-        list = new ArrayList<>();
+        list = new String[n];
+
         for (int i = 0; i < n; i++) {
-            list.add(br.readLine());
+            list[i] = br.readLine();
         }
+
         minLength = Integer.MAX_VALUE;
-
         checked = new boolean[n];
-        dfs("", 0);
 
+        dfs("", 0);
         System.out.println(minLength);
     }
 
     private static void dfs(String current, int depth) {
-        if (depth == n) { // 모든 문자열을 합쳤다면
-            minLength = Math.min(current.length(), minLength);
+        if (depth == n) {
+            minLength = Math.min(minLength, current.length());
             return;
         }
 
         for (int i = 0; i < n; i++) {
             if (!checked[i]) {
                 checked[i] = true;
-                String mergeStr = merge(current, list.get(i));
-                dfs(mergeStr, depth+1);
+                dfs(merge(current, list[i]), depth + 1);
                 checked[i] = false;
             }
         }
@@ -46,7 +45,7 @@ public class Main {
         int maxOverlap = 0;
 
         for (int k = 1; k <= Math.min(cLen, wLen); k++) {
-            if (current.substring(cLen-k).equals(word.substring(0, k))) {
+            if (current.substring(cLen - k).equals(word.substring(0, k))) {
                 maxOverlap = k;
             }
         }
