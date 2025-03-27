@@ -15,6 +15,7 @@ public class Main {
             char now = str.charAt(i);
 
             switch (now) {
+                // +, -, *, / 모두 같은 동작 수행
                 case '+' :
                 case '-' :
                 case '*' :
@@ -33,7 +34,7 @@ public class Main {
                     }
                     stack.pop();
                     break;
-                default : sb.append(now);
+                default : sb.append(now); break;
             }
         }
 
@@ -42,16 +43,14 @@ public class Main {
         }
 
         System.out.println(sb.toString());
+
+        br.close();
     }
 
     private static int priority(char operator) {
-        if (operator == '(' || operator == ')') {
-            return 0;
-        } else if (operator == '+' || operator == '-') {
-            return 1;
-        } else if (operator == '*' || operator == '/') {
-            return 2;
-        }
+        if (operator == '(' || operator == ')') return 0;
+        else if (operator == '+' || operator == '-') return 1;
+        else if (operator == '*' || operator == '/') return 2;
 
         return -1;
     }
