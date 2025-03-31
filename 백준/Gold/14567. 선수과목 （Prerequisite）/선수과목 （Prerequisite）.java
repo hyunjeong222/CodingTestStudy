@@ -1,15 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static int n, m;
-    static int[] indegree;
-    static int[] ans;
+    static int[] dp;
     static ArrayList<ArrayList<Integer>> list;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -22,49 +18,31 @@ public class Main {
             list.add(new ArrayList<>());
         }
 
-        indegree = new int[n+1];
-
-        int a, b; // A번 과목이 B번 과목의 선수과목
+       int a, b; // A번 과목이 B번 과목의 선수과목
         for (int i = 0; i < m; i++) {
             st = new StringTokenizer(br.readLine());
             a = Integer.parseInt(st.nextToken());
             b = Integer.parseInt(st.nextToken());
 
             list.get(a).add(b);
-            indegree[b]++;
         }
 
-        topologicalSort();
+        dp = new int[n+1];
+        Arrays.fill(dp, 1);
+
+        for (int i = 1; i <= n; i++) {
+            if (list.get(i).isEmpty()) continue;
+
+            for (int now : list.get(i)) {
+                dp[now] = Math.max(dp[now], dp[i]+1);
+            }
+        }
+
 
         StringBuilder sb = new StringBuilder();
         for (int i = 1; i <= n; i++) {
-            sb.append(ans[i]).append(" ");
+            sb.append(dp[i]).append(" ");
         }
         System.out.println(sb.toString());
-    }
-
-    private static void topologicalSort() {
-        Queue<Integer> que = new LinkedList<>();
-        ans = new int[n+1];
-
-        for (int i = 1; i <= n; i++) {
-            if (indegree[i] == 0) {
-                que.offer(i);
-                ans[i] = 1;
-            }
-        }
-
-        while (!que.isEmpty()) {
-            int now = que.poll();
-
-            for (int next : list.get(now)) {
-                indegree[next]--;
-
-                if (indegree[next] == 0) {
-                    que.offer(next);
-                    ans[next] = ans[now]+1;
-                }
-            }
-        }
     }
 }
