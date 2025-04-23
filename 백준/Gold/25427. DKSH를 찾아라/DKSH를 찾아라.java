@@ -8,10 +8,10 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         String s = br.readLine();
 
-        int D = 0;
-        int K = 0;
-        int S = 0;
-        int H = 0;
+        long D = 0;
+        long K = 0;
+        long S = 0;
+        long H = 0;
         for (int i = 0; i < n; i++) {
             if (s.charAt(i) == 'D') D++;
             else if (s.charAt(i) == 'K') K += D;
