@@ -1,50 +1,63 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.*;
 
 public class Main {
-    static char[] str1, str2;
     static int[][] dp;
-    static StringBuilder sb = new StringBuilder();
+    static char[] str1, str2;
+    static int len1, len2;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        String str = br.readLine();
-        str1 = str.toCharArray();
+        str1 = br.readLine().toCharArray();
         str2 = br.readLine().toCharArray();
 
-        sb.append(dynamic(str1.length, str2.length)).append("\n");
-        strAdd(str, str1.length, str2.length);
+        len1 = str1.length;
+        len2 = str2.length;
 
-        System.out.println(sb);
+        dp = new int[len1+1][len2+1];
+
+        int len = findLen();
+        String str = findStr();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(len).append("\n").append(str).append("\n");
+
+        System.out.println(sb.toString());
+
+        br.close();
     }
 
-    private static void strAdd(String str, int l1, int l2) {
-        Stack<Character> stack = new Stack<>();
+    private static int findLen() {
+        for (int i = 1; i <= len1; i++) {
+            for (int j = 1; j <= len2; j++) {
+                // 두 문자가 같다면 대각선 + 1
+                if (str1[i-1] == str2[j-1]) {
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                } else { // 두 문자가 다르다면 이전 행과 이전 열 중 큰 것
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[len1][len2];
+    }
 
-        while (l1 > 0 && l2 > 0) {
-            if (dp[l1][l2] == dp[l1-1][l2]) l1--;
-            else if (dp[l1][l2] == dp[l1][l2-1]) l2--;
+    private static String findStr() {
+        Stack<Character> stack = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        while (len1 > 0 && len2 > 0) {
+            if (dp[len1][len2] == dp[len1][len2-1]) len2--;
+            else if (dp[len1][len2] == dp[len1-1][len2]) len1--;
             else {
-                stack.push(str.charAt(l1-1));
-                l1--;
-                l2--;
+                stack.push(str1[len1-1]);
+                len1--; len2--;
             }
         }
 
         while (!stack.isEmpty()) {
             sb.append(stack.pop());
         }
-    }
 
-    private static int dynamic(int l1, int l2) {
-        dp = new int[l1+1][l2+1];
-        for (int i = 1; i <= l1; i++) {
-            for (int j = 1; j <= l2; j++) {
-                if (str1[i-1] == str2[j-1]) dp[i][j] = dp[i-1][j-1]+1;
-                else dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
-            }
-        }
-        return dp[l1][l2];
+        return sb.toString();
     }
 }
