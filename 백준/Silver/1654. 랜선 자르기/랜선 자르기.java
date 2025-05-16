@@ -1,33 +1,35 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int k = Integer.parseInt(st.nextToken());
-        int n = Integer.parseInt(st.nextToken());
-        int[] arr = new int[k];
-        long max = 0;
+        int k = Integer.parseInt(st.nextToken()); // 갖고있는 랜선의 수
+        int n = Integer.parseInt(st.nextToken()); // 필요한 랜선의 수
+
+        int[] len = new int[k];
         for (int i = 0; i < k; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
-            max = Math.max(max, arr[i]);
+            len[i] = Integer.parseInt(br.readLine());
         }
-        long start = 1;
-        long end = max;
-        while (start <= end) {
-            long mid = start + (end-start) / 2;
+        Arrays.sort(len);
 
-            long sum = 0;
-            for (int lan : arr) {
-                if (lan >= mid) sum += (lan / mid);
+        long left = 1;
+        long right = len[k-1];
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            long cnt = 0;
+            for (int i = 0; i < k; i++) {
+                cnt += len[i] / mid;
             }
-
-            if (sum >= n) start = mid+1;
-            else end = mid-1;
+            if (cnt >= n) left = mid+1;
+            else right = mid-1;
         }
-        System.out.println(end);
+
+        System.out.println(right);
+
+        br.close();
     }
 }
