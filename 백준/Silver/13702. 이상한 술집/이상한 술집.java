@@ -1,36 +1,36 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken()); // 막걸리 주전자 개수
-        int k = Integer.parseInt(st.nextToken()); // 은상이를 포함한 친구들의 수
+        int k = Integer.parseInt(st.nextToken()); // 친구들 수 (은상 포함)
 
-        int[] arr = new int[n];
+        int[] capacity = new int[n];
         for (int i = 0; i < n; i++) {
-            arr[i] = Integer.parseInt(br.readLine());
+            capacity[i] = Integer.parseInt(br.readLine());
         }
-        Arrays.sort(arr);
 
-        int start = 1;
-        int end = arr[n-1];
-        while (start <= end) {
-            int mid = start + (end-start) / 2;
+        long left = 1;
+        long right = capacity[n-1];
+        while (left <= right) {
+            long mid = (left+right)/2;
 
             int cnt = 0;
-            for (int a : arr) {
-                cnt += a/mid;
+            for (int i = 0; i < n; i++) {
+                cnt += capacity[i] / mid;
             }
 
-            if (cnt >= k) start = mid+1;
-            else end = mid-1;
+            if (cnt >= k) left = mid+1;
+            else right = mid-1;
         }
 
-        System.out.println(end);
+        System.out.println(right);
+
+        br.close();
     }
 }
