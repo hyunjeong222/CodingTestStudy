@@ -24,7 +24,7 @@ public class Main {
             int max = 0;
             for (int j = i-1; j >= 0; j--) {
                 if (A[j] < A[i]) {
-                    if (dpL[j] > max) max = dpL[j];
+                    max = Math.max(max, dpL[j]);
                 }
             }
             dpL[i] = max+1;
@@ -34,7 +34,7 @@ public class Main {
             int max = 0;
             for (int j = i+1; j < n; j++) {
                 if (A[j] < A[i]) {
-                    if (dpR[j] > max) max = dpR[j];
+                    max = Math.max(max, dpR[j]);
                 }
             }
             dpR[i] = max+1;
