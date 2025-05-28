@@ -9,11 +9,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken()); // 점의 수
+        m = Integer.parseInt(st.nextToken()); // 선분의 수
 
-        arr = new int[n];
         st = new StringTokenizer(br.readLine());
+        arr = new int[n];
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
@@ -27,9 +27,8 @@ public class Main {
 
             int lower = binarySearch(s, 0);
             int upper = binarySearch(e, 1);
-
+            
             sb.append(upper-lower).append("\n");
-
         }
 
         System.out.println(sb.toString());
