@@ -46,19 +46,20 @@ public class Main {
             if (now.x == sy) return now.cnt;
 
             int move = len[now.x];
-            for (int i = now.x; i < n+1; i+=move) {
+            // a>b일지, a<b일지 모름
+            // 순방향, 역방향 다 고려해야 함
+            for (int i = now.x+move; i <= n; i+=move) {
                 if (!checked[i]) {
                     checked[i] = true;
                     que.offer(new Pos(i, now.cnt+1));
                 }
             }
-            for (int i = now.x; i > 0; i-=move) {
+            for (int i = now.x-move; i >= 1; i-=move) {
                 if (!checked[i]) {
                     checked[i] = true;
                     que.offer(new Pos(i, now.cnt+1));
                 }
             }
-
         }
 
         return -1;
