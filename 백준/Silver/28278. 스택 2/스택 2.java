@@ -9,22 +9,22 @@ public class Main {
         int n = Integer.parseInt(br.readLine()); // 명령의 수
 
         StringTokenizer st;
-        int type, x;
-        Stack<Integer> stack = new Stack<>();
+        String type, x;
+        Stack<String> stack = new Stack<>();
         StringBuilder sb = new StringBuilder();
         while (n --> 0) {
             st = new StringTokenizer(br.readLine());
-            type = Integer.parseInt(st.nextToken());
+            type = st.nextToken();
 
-            if (type == 1) {
-                x = Integer.parseInt(st.nextToken());
+            if ("1".equals(type)) {
+                x = st.nextToken();
                 stack.push(x);
-            } else if (type == 2) {
+            } else if ("2".equals(type)) {
                 if (stack.isEmpty()) sb.append(-1).append("\n");
                 else sb.append(stack.pop()).append("\n");
-            } else if (type == 3) {
+            } else if ("3".equals(type)) {
                 sb.append(stack.size()).append("\n");
-            } else if (type == 4) {
+            } else if ("4".equals(type)) {
                 if (stack.isEmpty()) sb.append(1).append("\n");
                 else sb.append(0).append("\n");
             } else {
