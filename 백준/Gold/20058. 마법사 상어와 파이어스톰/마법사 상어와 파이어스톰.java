@@ -1,7 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
 public class Main {
     static int n, q;
@@ -31,14 +34,11 @@ public class Main {
         }
 
         for (int i = 0; i < q; i++) {
-            // 파이어스톰 시전
-            map = divide(l[i]); // 격자 나눠서 시계 방향으로 90도 회전
-            map = melt(); // 얼음이 있는 칸 3개 또는 그 이상과 인접해있지 않은 칸은 얼음의 양이 1 줄이기
+            map = divide(l[i]); // 부분 격자 나누기
+            map = melt(); // 인접한 얼음 칸이 3개 미만인 칸 찾아 얼음 녹이기
         }
 
-        // System.out.println(Arrays.deepToString(map));
-
-        // 얼음 A[r][c]의 합, 가장 큰 덩어리가 차지하는 칸의 개수
+        // 남아있는 얼음의 합, 가장 큰 덩어리가 차지하는 칸의 개수
         total = max = 0;
         biggest();
 
@@ -50,13 +50,60 @@ public class Main {
         br.close();
     }
 
+    private static int[][] divide(int l) {
+        int[][] tmp = new int[n][n];
+        l = (int) Math.pow(2, l);
+        for (int i = 0; i < n; i+=l) {
+            for (int j = 0; j < n; j+=l) {
+                rotate(i, j, l, tmp); // 시계 방향으로 90도 회전
+            }
+        }
+
+        return tmp;
+    }
+
+    private static void rotate(int x, int y, int l, int[][] tmp) {
+        for (int i = 0; i < l; i++) {
+            for (int j = 0; j < l; j++) {
+                tmp[i+x][j+y] = map[x+l-1-j][y+i];
+            }
+        }
+    }
+    
+    private static int[][] melt() {
+        int[][] tmp = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            tmp[i] = Arrays.copyOf(map[i], n);
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                int cnt = 0; // 인접한 얼음이 있는 칸의 개수
+                if (map[i][j] == 0) continue;
+
+                for (int d = 0; d < 4; d++) {
+                    int nx = i + dx[d];
+                    int ny = j + dy[d];
+
+                    if (nx >= 0 && nx < n && ny >= 0 && ny < n) {
+                        if (map[nx][ny] > 0) cnt++;
+                    }
+                }
+
+                if (cnt < 3) tmp[i][j]--; // 3개 미만이라면 얼음 녹이기
+            }
+        }
+
+        return tmp;
+    }
+    
     private static void biggest() {
         Queue<int[]> que = new LinkedList<>();
         boolean[][] checked = new boolean[n][n];
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                total += map[i][j];
+                total += map[i][j]; // 남아있는 얼음의 합
                 if (map[i][j] > 0 && !checked[i][j]) {
                     que.offer(new int[]{i, j});
                     checked[i][j] = true;
@@ -78,55 +125,9 @@ public class Main {
                             }
                         }
                     }
+                    
                     max = Math.max(max, cnt);
                 }
-            }
-        }
-    }
-
-    private static int[][] melt() {
-        int[][] tmp = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            tmp[i] = Arrays.copyOf(map[i], n); // n은 복사 할 길이
-        }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int cnt = 0;
-                if (map[i][j] == 0) continue; // 얼음 0
-
-                for (int d = 0; d < 4; d++) {
-                    int nx = i + dx[d];
-                    int ny = j + dy[d];
-
-                    if (nx >= 0 && nx < n && ny >= 0 && ny < n) {
-                        if (map[nx][ny] > 0) cnt++; // 얼음이 있는 칸
-                    }
-                }
-
-                if (cnt < 3) tmp[i][j]--;
-            }
-        }
-
-        return tmp;
-    }
-
-    private static int[][] divide(int l) {
-        int[][] tmp = new int[n][n];
-        l = (int) Math.pow(2, l);
-        for (int i = 0; i < n; i+=l) {
-            for (int j = 0; j < n; j+=l) {
-                rotate(i, j, l, tmp);
-            }
-        }
-
-        return tmp;
-    }
-
-    private static void rotate(int x, int y, int l, int[][] tmp) {
-        for (int i = 0; i < l; i++) {
-            for (int j = 0; j < l; j++) {
-                tmp[i+x][j+y] = map[x+l-1-j][y+i];
             }
         }
     }
