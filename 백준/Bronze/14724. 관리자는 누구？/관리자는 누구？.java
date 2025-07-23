@@ -1,24 +1,31 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
-        String[] club = {"PROBRAIN", "GROW", "ARGOS", "ADMIN", "ANT", "MOTION", "SPG", "COMON", "ALMIGHTY"};
-        int max = 0, group = 0;
+        int n = Integer.parseInt(br.readLine()); // 동아리 원의 수
+
+        String[] group = {"PROBRAIN", "GROW", "ARGOS", "ADMIN", "ANT", "MOTION", "SPG", "COMON", "ALMIGHTY"};
+
+        StringTokenizer st;
+        int max = 0;
+        int groupNum = 0;
         for (int i = 0; i < 9; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
+            st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
                 int num = Integer.parseInt(st.nextToken());
-                if (max < num) {
+                if (num >= max) {
                     max = num;
-                    group = i;
+                    groupNum = i;
                 }
             }
         }
-        System.out.println(club[group]);
+
+        System.out.println(group[groupNum]);
+
+        br.close();
     }
 }
