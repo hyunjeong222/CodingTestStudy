@@ -1,79 +1,79 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static int n, m;
+    static int n, m, itemCnt;
     static int[][] map;
-    static boolean[][][] checked; // 168421
+    static boolean[][][] checked; // 위치, 챙긴 물건
+    static Pos start;
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
-    static int sx, sy; // 시작 위치
-    static int objectCnt; // 물건 개수, 최대 5개
-    static Queue<Pos> que;
     static public class Pos {
         int x; int y; int cnt; int time;
         public Pos (int x, int y, int cnt, int time) {
-            this.x = x; this.y = y; this.cnt = cnt; this.time = time;
+            this.x = x; this.y = y;
+            this.cnt = cnt; this.time = time;
         }
     }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken()); // 가로
+        m = Integer.parseInt(st.nextToken()); // 세로
 
         map = new int[m][n];
-        objectCnt = 0;
         for (int i = 0; i < m; i++) {
-            char[] tmp = br.readLine().toCharArray();
+            String str = br.readLine();
             for (int j = 0; j < n; j++) {
-                if (tmp[j] == 'X') { // 물건
-                    map[i][j] = objectCnt++;
-                } else if (tmp[j] == 'S') { // 시작위치
+                map[i][j] = str.charAt(j);
+                // S : 경재 씨의 현재 위치
+                // X : 챙겨야 하는 물건
+                if (map[i][j] == 'S') {
+                    start = new Pos(i, j, 0, 0);
                     map[i][j] = '.';
-                    sx = i; sy = j;
-                } else map[i][j] = tmp[j];
+                } else if (map[i][j] == 'X') map[i][j] = itemCnt++;
             }
         }
-        
-        int ans = bfs();
-        System.out.println(ans);
+
+        System.out.println(bfs());
+
+        br.close();
     }
 
     private static int bfs() {
-        int x = (1 << objectCnt) - 1;
-        que = new LinkedList<>();
-        checked = new boolean[m][n][x+1]; // 168421
-        que.offer(new Pos(sx, sy, 0, 0));
+        Queue<Pos> que = new LinkedList<>();
+        que.offer(start);
 
-       while (!que.isEmpty()) {
+        int checkNum = (1 << itemCnt) - 1;
+        checked = new boolean[m][n][checkNum+1];
+
+        while (!que.isEmpty()) {
             Pos now = que.poll();
-            int cnt = now.cnt;
-            int time = now.time;
 
-            if (map[now.x][now.y] == 'E') { // 출구
-                if (cnt == x) return time; // 물건 다 챙김
+            // 나가는 문
+            if (map[now.x][now.y] == 'E') {
+                // 모든 아이템 획득
+                if (checkNum == now.cnt) return now.time;
             }
 
-            for (int i = 0; i < 4; i++) {
-                int nx = dx[i] + now.x;
-                int ny = dy[i] + now.y;
+            for (int d = 0; d < 4; d++) {
+                int nx = now.x + dx[d];
+                int ny = now.y + dy[d];
 
-                if (rangeCheck(nx, ny) || map[nx][ny] == '#' || checked[nx][ny][cnt]) continue; // 벽이거나 이미 갖고있는 물건이라면 패쓰
+                if (rangeCheck(nx, ny)) continue; // 범위 체크
+                if (checked[nx][ny][now.cnt] || map[nx][ny] == '#') continue; // 이미 챙긴 물건, 벽 -> 이동 X
+                
+                int nextItem = now.cnt;
+                if (map[nx][ny] <= itemCnt) nextItem |= 1 << map[nx][ny];
 
-                int nCnt = cnt;
-                if (map[nx][ny] <= objectCnt) nCnt = nCnt | 1 << map[nx][ny];
-
-                checked[nx][ny][nCnt] = true;
-                que.offer(new Pos(nx, ny, nCnt, time+1));
-
+                checked[nx][ny][nextItem] = true;
+                que.offer(new Pos(nx, ny, nextItem, now.time+1));
             }
         }
-       return -1;
+
+        return -1;
     }
 
     private static boolean rangeCheck(int x, int y) {
