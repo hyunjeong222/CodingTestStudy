@@ -57,17 +57,18 @@ public class Main {
                 }
             }
 
-            while (!pq.isEmpty()) {
+            loop1: while (!pq.isEmpty()) {
                 Pos now = pq.poll();
-
-                if (now.x == h-1 || now.x == 0 || now.y == w-1 || now.y == 0) {
-                    sb.append(now.w).append("\n");
-                    break;
-                }
 
                 for (int d = 0; d < 4; d++) {
                     int nx = now.x + dx[d];
                     int ny = now.y + dy[d];
+
+                    // 범위 아웃되면 탈출
+                    if (nx < 0 || nx >= h || ny < 0 || ny >= w) {
+                        sb.append(now.w).append("\n");
+                        break loop1;
+                    }
 
                     if (checked[nx][ny]) continue;
 
