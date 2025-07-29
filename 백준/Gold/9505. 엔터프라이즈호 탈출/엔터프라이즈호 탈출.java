@@ -5,16 +5,16 @@ import java.util.*;
 
 public class Main {
     static int k, w, h;
-    static int[][] board;
-    static long[][] dist;
+    static int[][] map;
+    static boolean[][] checked;
     static public class Pos implements Comparable<Pos> {
-        int x; int y; long w;
-        public Pos (int x, int y, long w) {
+        int x, y, w;
+        public Pos (int x, int y, int w) {
             this.x = x; this.y = y; this.w = w;
         }
         @Override
         public int compareTo(Pos o) {
-            return Long.compare(this.w, o.w);
+            return this.w - o.w;
         }
     }
     static int[] dx = {-1, 1, 0, 0};
@@ -25,85 +25,60 @@ public class Main {
         int t = Integer.parseInt(br.readLine()); // 테스트케이스
 
         StringBuilder sb = new StringBuilder();
-        int num, sx = 0, sy = 0;
-        char type;
         StringTokenizer st;
-        HashMap<Character, Integer> map;
-
+        PriorityQueue<Pos> pq;
         while (t --> 0) {
             st = new StringTokenizer(br.readLine());
             k = Integer.parseInt(st.nextToken()); // 클링온 전투선의 클래스 개수
             w = Integer.parseInt(st.nextToken()); // 평면의 폭, 열
             h = Integer.parseInt(st.nextToken()); // 평면의 높이, 행
 
-            map = new HashMap<>();
+            int[] cost = new int[26];
             for (int i = 0; i < k; i++) {
                 st = new StringTokenizer(br.readLine());
-                type = st.nextToken().charAt(0); // 클링온 전투선의 클래스 이름
-                num = Integer.parseInt(st.nextToken()); // 무력화시키는 데에 결리는 시간
+                char type = st.nextToken().charAt(0); // 클링온 전투선의 클래스 이름
+                int num = Integer.parseInt(st.nextToken()); // 무력화시키는 데에 결리는 시간
 
-                map.put(type, num);
+                cost[type-'A'] = num;
             }
 
-            board = new int[h][w];
-            dist = new long[h][w];
+            map = new int[h][w];
+            checked = new boolean[h][w];
+            pq = new PriorityQueue<>();
             for (int i = 0; i < h; i++) {
-                String str = br.readLine();
+                String input = br.readLine();
                 for (int j = 0; j < w; j++) {
-                    char c = str.charAt(j);
-
+                    char c = input.charAt(j);
                     if (c == 'E') { // 엔터프라이즈호의 위치
-                        sx = i; sy = j;
-                        board[i][j] = 0;
-                        continue;
+                        pq.offer(new Pos(i, j, 0));
+                        checked[i][j] = true;
                     }
-
-                    board[i][j] = map.get(c);
+                    map[i][j] = c-'A';
                 }
             }
-            // System.out.println(Arrays.deepToString(board));
 
-            long ans = dijkstra(sx, sy);
+            while (!pq.isEmpty()) {
+                Pos now = pq.poll();
 
-            sb.append(ans).append("\n");
+                if (now.x == h-1 || now.x == 0 || now.y == w-1 || now.y == 0) {
+                    sb.append(now.w).append("\n");
+                    break;
+                }
+
+                for (int d = 0; d < 4; d++) {
+                    int nx = now.x + dx[d];
+                    int ny = now.y + dy[d];
+
+                    if (checked[nx][ny]) continue;
+
+                    checked[nx][ny] = true;
+                    pq.offer(new Pos(nx, ny, now.w+cost[map[nx][ny]]));
+                }
+            }
         }
 
         System.out.println(sb.toString());
 
         br.close();
-    }
-
-    private static long dijkstra(int sx, int sy) {
-        for (long[] row : dist) Arrays.fill(row, Long.MAX_VALUE);
-
-        PriorityQueue<Pos> pq = new PriorityQueue<>();
-        pq.offer(new Pos(sx, sy, 0));
-        dist[sx][sy] = 0;
-
-        long min = Long.MAX_VALUE;
-
-        while (!pq.isEmpty()) {
-            Pos now = pq.poll();
-
-            if (now.w > dist[now.x][now.y]) continue;
-
-            for (int d = 0; d < 4; d++) {
-                int nx = now.x + dx[d];
-                int ny = now.y + dy[d];
-
-                // 범위 아웃되면 탈출
-                if (nx < 0 || nx >= h || ny < 0 || ny >= w) {
-                    min = Math.min(min, now.w);
-                    continue;
-                }
-
-                if (dist[nx][ny] > dist[now.x][now.y]+board[nx][ny]) {
-                    dist[nx][ny] = dist[now.x][now.y]+board[nx][ny];
-                    pq.offer(new Pos(nx, ny, dist[nx][ny]));
-                }
-            }
-        }
-
-        return min;
     }
 }
