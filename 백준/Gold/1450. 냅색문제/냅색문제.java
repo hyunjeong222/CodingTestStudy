@@ -30,6 +30,7 @@ public class Main {
         int ans = 0;
         for (int i = 0; i < left.size(); i++) {
             int searchValue = c - left.get(i);
+            // 인덱스를 반환하므로 +1
             ans += binarySearch(right, searchValue)+1;
         }
 
