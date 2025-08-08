@@ -23,6 +23,7 @@ public class Main {
         ArrayList<Integer> right = new ArrayList<>();
         comb(0, n/2, left, 0);
         comb(n/2, n, right, 0);
+        Collections.sort(left);
         Collections.sort(right);
 
         long ans = 0;
