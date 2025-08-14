@@ -13,6 +13,7 @@ public class Main {
 
         int target = (int)((y*100)/x);
 
+        // 1판이라도 졌으므로, 이후에 아무리 이겨도 100%가 안 되고, 승률은 99%에서 고정
         if (target >= 99) {
             System.out.println(-1);
             return;
