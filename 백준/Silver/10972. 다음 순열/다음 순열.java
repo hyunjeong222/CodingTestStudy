@@ -7,10 +7,10 @@ public class Main {
     static int[] arr;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        int n = Integer.parseInt(br.readLine()); // 1부터 N까지의 수
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        arr = new int[n];
+        arr = new int[n]; // 순열
         for (int i = 0; i < n; i++) {
             arr[i] = Integer.parseInt(st.nextToken());
         }
@@ -20,7 +20,7 @@ public class Main {
             for (int a : arr) {
                 sb.append(a).append(" ");
             }
-        } else {
+        } else { // 사전순으로 마지막에 오는 순열
             sb.append(-1);
         }
 
@@ -32,28 +32,27 @@ public class Main {
     private static boolean nextPermutation() {
         int i = arr.length-1;
 
-        // A[i-1] < A[i] 를 만족하는 가장 큰 i를 찾기
-        while (i > 0 && arr[i -1] >= arr[i]) {
+        // A[i-1] < A[i]를 만족하는 가장 큰 i를 찾기
+        while (i > 0 && arr[i-1] >= arr[i]) {
             i -= 1;
         }
 
         // i의 위치가 0이면 내림차순 (마지막 순열)
         if (i <= 0) return false;
 
-        // j >= i 이면서 A[j] > A[i-1] 을 만족하는 가장 큰 j를 찾기
+        // j >= i이면서 A[j] > A[i-1] 을 만족하는 가장 큰 j를 찾기
         int j = arr.length-1;
         while (arr[i-1] >= arr[j]) {
             j -= 1;
         }
 
-        // A[i-1]과 A[j] 를 swap
+        // A[i-1]과 A[j]를 swap
         int tmp = arr[j];
         arr[j] = arr[i-1];
         arr[i-1] = tmp;
-        
-        j = arr.length-1;
 
-        // A[i] 부터 순열 뒤집기
+        j = arr.length-1;
+        // A[i]부터 순열 뒤집기
         while (i < j) {
             tmp = arr[i];
             arr[i] = arr[j];
