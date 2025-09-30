@@ -27,7 +27,6 @@ public class Main {
 
     private static long func(int n, int m) {
         if (n == 1 && m == 1) return 1; // (1, 1) -> (1, 1) 경우의 수 1
-        if (n == 0 || m == 0) return 0; //
 
         if (dp[n][m] != -1) return dp[n][m];
         long ans = (func(n ,m-1)+func(n-1, m)+func(n-1, m-1)) % MOD;
