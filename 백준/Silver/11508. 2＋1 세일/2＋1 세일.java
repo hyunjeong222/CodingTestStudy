@@ -1,22 +1,29 @@
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-    public static void main(String args[]){
-        Scanner scan = new Scanner(System.in);
-        int N = scan.nextInt();
-        Integer[] goods = new Integer[N];
-
-        for(int i=0;i<N;i++) goods[i] = scan.nextInt();
-        Arrays.sort(goods, Comparator.reverseOrder());
+        int n = Integer.parseInt(br.readLine());
+        ArrayList<Integer> milk = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            milk.add(Integer.parseInt(br.readLine()));
+        }
+        Collections.sort(milk, Collections.reverseOrder());
+        // System.out.println(milk);
 
         int sum = 0;
-        for(int i=0;i<N;i++){
-            if(i%3==2) continue;
-            sum += goods[i];
+        for (int i = 0; i < n; i++) {
+            if (i%3==2) continue;
+            sum += milk.get(i);
         }
+
         System.out.println(sum);
+
+        br.close();
     }
 }
