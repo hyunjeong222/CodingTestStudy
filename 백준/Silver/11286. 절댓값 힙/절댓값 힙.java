@@ -12,12 +12,9 @@ public class Main {
             int abs1 = Math.abs(x);
             int abs2 = Math.abs(y);
 
-            if (abs1 > abs2) {
-                return abs1 - abs2;
-            } else if (abs1 == abs2) {
-                return x - y;
-            }
-            return -1;
+            if (abs1 != abs2) return abs1 - abs2; // 절댓값 기준 오름차순
+            return x - y; // 절댓값 같으면 실제 값 오름차순
+            
         });
         for (int i = 0; i < n; i++) {
             int num = Integer.parseInt(br.readLine());
