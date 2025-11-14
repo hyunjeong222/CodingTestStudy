@@ -19,7 +19,7 @@ public class Main {
             return this.cost - o.cost;
         }
     }
-    static final int INF = 200000000;
+    static final int INF = 200_000_000;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
