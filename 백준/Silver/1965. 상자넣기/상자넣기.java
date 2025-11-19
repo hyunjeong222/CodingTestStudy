@@ -4,6 +4,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
+    static int[] size, memo;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -11,26 +12,35 @@ public class Main {
         int n = Integer.parseInt(br.readLine()); // 상자의 개수
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int[] size = new int[n]; // 각 상자의 크기
+        size = new int[n]; // 각 상자의 크기
         for (int i = 0; i < n; i++) {
             size[i] = Integer.parseInt(st.nextToken());
         }
 
-        int[] dp = new int[n];
-        int ans = 0;
+        memo = new int[n+1];
+        int len = 0, idx;
         for (int i = 0; i < n; i++) {
-            dp[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (size[i] > size[j]) {
-                    dp[i] = Math.max(dp[i], dp[j]+1);
-                }
+            if(size[i] > memo[len]) {
+                memo[++len] = size[i];
+            } else {
+                idx = binarySearch(0, len, size[i]);
+                memo[idx] = size[i];
             }
-
-            ans = Math.max(ans, dp[i]);
         }
 
-        System.out.println(ans);
+        System.out.println(len);
 
         br.close();
+    }
+
+    private static int binarySearch(int left, int right, int target) {
+        while (left < right) {
+            int mid = left+(right-left)/2;
+
+            if (memo[mid] < target) left = mid+1;
+            else  right = mid;
+        }
+
+        return right;
     }
 }
