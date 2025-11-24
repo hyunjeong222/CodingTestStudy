@@ -37,7 +37,7 @@ public class Main {
         }
 
         if (max == 0) { // 모든 구간의 방문자 수가 0인 경우
-            bw.write("SAD\n");
+            bw.write("SAD" + "\n");
         } else {
             bw.write(max + "\n" + cnt);
         }
