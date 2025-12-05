@@ -53,37 +53,32 @@ public class Main {
         }
 
         int mid = (start+end)/2;
-        int left = init(start, mid, node*2);
-        int right = init(mid+1, end, node*2+1);
-        return tree[node] = getIdx(left, right);
+        return tree[node] = minIdx(init(start, mid, node*2), init(mid+1, end, node*2+1));
     }
 
+    private static int minIdx(int x, int y) {
+        if (arr[x] == arr[y]) {
+            return Math.min(x, y);
+        }
+
+        return arr[x] < arr[y] ? x : y;
+    }
+
+
     private static int update(int start, int end, int node, int idx) {
-        if (idx < start || idx > end) return tree[node];
+        if (start > idx || end < idx) return tree[node];
 
         if (start == end) return tree[node] = idx;
 
-        int mid = (start + end) / 2;
-        int left = update(start, mid, node * 2, idx);
-        int right = update(mid + 1, end, node * 2 + 1, idx);
-        return tree[node] = getIdx(left, right);
+        int mid = (start+end)/2;
+        return tree[node] = minIdx(update(start, mid, node*2, idx), update(mid+1, end, node*2+1, idx));
     }
 
-    private static int getIdx(int left, int right) {
-        if (arr[left] == arr[right]) {
-            return Math.min(left, right);
-        }
-
-        return arr[left] < arr[right] ? left : right;
-    }
-
-    private static int getMin(int start, int end, int node, int l, int r) {
-        if (r < start || l > end) return 0;
-        if (l <= start && end <= r) return tree[node];
+    private static int getMin(int start, int end, int node, int left, int right) {
+        if (right < start || left > end) return 0;
+        if (left <= start && end <= right) return tree[node];
 
         int mid = (start+end)/2;
-        int left = getMin(start, mid, node * 2, l, r);
-        int right = getMin(mid + 1, end, node * 2 + 1, l, r);
-        return getIdx(left, right);
+        return minIdx(getMin(start, mid, node * 2, left, right), getMin(mid + 1, end, node * 2 + 1, left, right));
     }
 }
