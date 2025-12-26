@@ -6,47 +6,48 @@ import java.util.*;
 public class Main {
     static int n, m;
     static int[] arr, tree;
-   public static void main(String[] args) throws IOException {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-       StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-       n = Integer.parseInt(br.readLine());
-       StringTokenizer st = new StringTokenizer(br.readLine());
-       arr = new int[n+1];
-       tree = new int[n*4];
-       for (int i = 1; i <= n; i++) {
-           arr[i] = Integer.parseInt(st.nextToken());
-       }
-       init(1, n, 1);
+        n = Integer.parseInt(br.readLine());
 
-       m = Integer.parseInt(br.readLine());
-       while (m --> 0) {
-           st = new StringTokenizer(br.readLine());
-           int cmd = Integer.parseInt(st.nextToken());
-           int i = Integer.parseInt(st.nextToken());
-           int x = Integer.parseInt(st.nextToken());
+        arr = new int[n+1];
+        tree = new int[n*4];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 1; i <= n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
+        }
+        init(1, n, 1);
 
-           if (cmd == 1) {
-               if (arr[i]%2 == 1 && x%2 == 0) {
-                   update(1, n, 1, i, 1);
-               } else if (arr[i]%2 == 0 && x%2 == 1) {
-                   update(1, n, 1, i, 0);
-               }
-               arr[i] = x;
-           } else if (cmd == 2 || cmd == 3) { // 짝수, 홀수의 개수
-                long cnt = query(1, n, 1, i, x);
+        m = Integer.parseInt(br.readLine());
+        while (m --> 0) {
+            st = new StringTokenizer(br.readLine());
+            int cmd = Integer.parseInt(st.nextToken());
+            int l = Integer.parseInt(st.nextToken());
+            int r = Integer.parseInt(st.nextToken());
+
+            if (cmd == 1) {
+                // 기존 값 arr[i]는 홀수 → 새 값 x는 짝수
+                if (arr[l]%2==1 && r%2==0) update(1, n, 1, l, 1);
+                // 기존 값 arr[i]는 짝수 → 새 값 x는 홀수
+                else if (arr[l]%2==0 && r%2==1) update(1, n, 1, l, 0);
+
+                arr[l] = r;
+            } else if (cmd == 2 || cmd == 3) {
+                long evenCnt = getEvenCnt(1, n, 1, l, r); // 짝수의 개수
                 if (cmd == 2) {
-                    sb.append(cnt).append("\n");
-                } else {
-                    sb.append(x-i+1-cnt).append("\n");
+                    sb.append(evenCnt).append("\n");
+                } else if (cmd == 3) {
+                    sb.append(r-l+1-evenCnt).append("\n");
                 }
-           }
-       }
+            }
+        }
 
-       System.out.println(sb.toString());
+        System.out.println(sb.toString());
 
-       br.close();
-   }
+        br.close();
+    }
 
     private static int init(int start, int end, int node) {
         if (start == end) {
@@ -58,19 +59,19 @@ public class Main {
         return tree[node] = init(start, mid, node*2)+init(mid+1, end, node*2+1);
     }
 
-    private static long query(int start, int end, int node, int left, int right) {
-       if (right < start || end < left) return 0;
-       if (left <= start && end <= right) return tree[node];
+    private static int update(int start, int end, int node, int idx, int val) {
+        if (idx < start || end < idx) return tree[node];
+        if (start == end) return tree[node] = val;
 
-       int mid = (start+end)/2;
-       return query(start, mid, node*2, left, right)+query(mid+1, end, node*2+1, left, right);
+        int mid = (start+end)/2;
+        return tree[node] = update(start, mid, node*2, idx, val)+update(mid+1, end, node*2+1, idx, val);
     }
 
-    private static int update(int start, int end, int node, int idx, int val) {
-       if (idx < start || end < idx) return tree[node];
-       if (start == end) return tree[node] = val;
+    private static long getEvenCnt(int start, int end, int node, int left, int right) {
+        if (right < start || left > end) return 0;
+        if (left <= start && right >= end) return tree[node];
 
-       int mid = (start+end)/2;
-       return tree[node] = update(start, mid, node*2, idx, val)+update(mid+1, end, node*2+1, idx, val);
+        int mid = (start+end)/2;
+        return getEvenCnt(start, mid, node*2, left, right)+getEvenCnt(mid+1, end, node*2+1, left, right);
     }
 }
