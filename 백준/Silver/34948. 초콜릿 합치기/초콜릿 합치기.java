@@ -1,51 +1,59 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-
     static class Chocolate {
         int h, w;
         Chocolate(int h, int w) {
             this.h = h;
             this.w = w;
         }
-    }
-
-    public static void main(String[] args) throws Exception {
+    };
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
+        // StringBuilder sb = new StringBuilder();
 
-        int[] H = new int[N];
-        int[] W = new int[N];
+        int n = Integer.parseInt(br.readLine()); // 초콜릿의 개수
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) H[i] = Integer.parseInt(st.nextToken());
+        int[] height = new int[n]; // 세로
+        for (int i = 0; i < n; i++) {
+            height[i] = Integer.parseInt(st.nextToken());
+        }
 
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < N; i++) W[i] = Integer.parseInt(st.nextToken());
-
-        Chocolate[] arr = new Chocolate[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = new Chocolate(H[i], W[i]);
+        int[] width = new int[n]; // 가로
+        for (int i = 0; i < n; i++) {
+            width[i] = Integer.parseInt(st.nextToken());
         }
 
-        // 1. 세로 길이 오름차순 정렬
-        Arrays.sort(arr, Comparator.comparingInt(a -> a.h));
+        Chocolate[] chocolates = new Chocolate[n];
+        for (int i = 0; i < n; i++) {
+            chocolates[i] = new Chocolate(height[i], width[i]);
+        }
+        // 세로 길이 기준 내림차순 정렬
+        Arrays.sort(chocolates, (a, b) -> b.h - a.h);
+        // 5 5 3 2 1
+        // 2 1 2 1 1
 
-        // 2. 뒤에서부터 가로 길이 누적합
-        long[] suffixSum = new long[N];
-        suffixSum[N - 1] = arr[N - 1].w;
-        for (int i = N - 2; i >= 0; i--) {
-            suffixSum[i] = suffixSum[i + 1] + arr[i].w;
+        // 앞에서부터 가로 길이 누적합
+        long[] prefixSum = new long[n];
+        prefixSum[0] = chocolates[0].w;
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i-1]+chocolates[i].w;
+        }
+        // System.out.println(Arrays.toString(prefixSum));
+
+        long ans = 0;
+        for (int i = 0; i < n; i++) {
+            long area = (long) chocolates[i].h*prefixSum[i];
+            ans = Math.max(ans, area);
         }
 
-        // 3. 각 높이를 기준으로 넓이 계산
-        long answer = 0;
-        for (int i = 0; i < N; i++) {
-            long area = (long) arr[i].h * suffixSum[i];
-            answer = Math.max(answer, area);
-        }
+        System.out.println(ans);
 
-        System.out.println(answer);
+        br.close();
     }
 }
