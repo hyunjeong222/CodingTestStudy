@@ -30,8 +30,7 @@ public class Main {
                 long sec = pq.poll();
                 long tmp = fir * sec;
 
-                ans *= tmp % MOD;
-                ans %= MOD;
+                ans = ((ans % MOD) * (tmp % MOD)) % MOD;
 
                 pq.offer(tmp);
             }
