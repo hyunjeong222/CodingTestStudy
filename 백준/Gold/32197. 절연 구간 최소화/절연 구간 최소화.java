@@ -5,19 +5,13 @@ import java.util.*;
 
 public class Main {
     static int n, m;
-    static ArrayList<ArrayList<Edge>> list;
+    static ArrayList<ArrayList<Node>> list;
     static int[][] dist; // dist[node][lastType]
-    static public class Edge {
-        int end;
+    static public class Node {
+        int node;
         int type; // 0: 직류, 1: 교류
-        public Edge(int end, int type) {
-            this.end = end; this.type = type;
-        }
-    }
-    static class Node {
-        int value; int lastType;
-        Node(int value, int lastType) {
-            this.value = value; this.lastType = lastType;
+        public Node(int node, int type) {
+            this.node = node; this.type = type;
         }
     }
     static int s, e;
@@ -42,8 +36,8 @@ public class Main {
             v = Integer.parseInt(st.nextToken());
             c = Integer.parseInt(st.nextToken());
 
-            list.get(u).add(new Edge(v, c));
-            list.get(v).add(new Edge(u, c));
+            list.get(u).add(new Node(v, c));
+            list.get(v).add(new Node(u, c));
         }
 
         st = new StringTokenizer(br.readLine());
@@ -57,6 +51,7 @@ public class Main {
 
         bfs();
 
+        // 최소 횟수
         System.out.println(Math.min(dist[e][0], dist[e][1]));
 
         br.close();
@@ -64,23 +59,25 @@ public class Main {
 
     private static void bfs() {
         Deque<Node> deque = new LinkedList<>();
-        deque.offer(new Node(s, 0));
-        deque.offer(new Node(s, 1));
+        deque.offer(new Node(s, 0)); // 직류
+        deque.offer(new Node(s, 1)); // 교류
 
-        // 아직 급전 방식을 사용하지 않았으므로
+        // 아직 급전 방식(직류에서 교류로 또는 교류에서 직류)을 사용하지 않았으므로
         // 두 타입 모두 0으로 시작 가능
         dist[s][0] = 0;
         dist[s][1] = 0;
 
         while (!deque.isEmpty()) {
             Node now = deque.poll();
+            int lastType = now.type;
 
-            for (Edge next : list.get(now.value)) {
-                int nextNode = next.end;
+            for (Node next : list.get(now.node)) {
+                int nextNode = next.node;
                 int nextType = next.type;
 
-                int cost = (now.lastType == nextType) ? 0 : 1;
-                int nextDist = dist[now.value][now.lastType]+cost;
+                // 이전 선로의 급전 방식과 현재 선로의 급전 방식이 다를 때만 +1
+                int cost = (lastType == nextType) ? 0 : 1;
+                int nextDist = dist[now.node][lastType]+cost;
 
                 if (dist[nextNode][nextType] > nextDist) {
                     dist[nextNode][nextType] = nextDist;
