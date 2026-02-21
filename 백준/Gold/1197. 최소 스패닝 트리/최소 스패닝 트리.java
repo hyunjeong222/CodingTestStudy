@@ -1,68 +1,68 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class Main {
     static int v, e;
-    static ArrayList<Pos> list;
-    static int[] parent;
+    static int[] parents;
+    static PriorityQueue<Pos> pq;
     static public class Pos implements Comparable<Pos> {
-        int u; int v; int w;
-        public Pos (int u, int v, int w) {
-            this.u = u; this.v = v; this.w = w;
+        int a; int b; int c;
+        public Pos(int a, int b, int c) {
+            this.a = a; this.b = b; this.c = c;
         }
         @Override
         public int compareTo(Pos o) {
-            return this.w - o.w;
+            return this.c - o.c;
         }
     }
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        v = Integer.parseInt(st.nextToken()); // 정점의 개수
-        e = Integer.parseInt(st.nextToken()); // 간선의 개수
-
-        parent = new int[v+1];
+        v = Integer.parseInt(st.nextToken());
+        e = Integer.parseInt(st.nextToken());
+        parents = new int[v+1];
         for (int i = 1; i <= v; i++) {
-            parent[i] = i;
+            parents[i] = i;
         }
-
-        list = new ArrayList<>();
-        int u, v, w;
-        for (int i = 0; i < e; i++) {
+        
+        pq = new PriorityQueue<>();
+        
+        int a, b, c;
+        while (e --> 0) {
             st = new StringTokenizer(br.readLine());
-            u = Integer.parseInt(st.nextToken());
-            v = Integer.parseInt(st.nextToken());
-            w = Integer.parseInt(st.nextToken());
+            a = Integer.parseInt(st.nextToken());
+            b = Integer.parseInt(st.nextToken());
+            c = Integer.parseInt(st.nextToken());
 
-            list.add(new Pos(u, v, w));
+            pq.offer(new Pos(a, b, c));
         }
-        Collections.sort(list);
 
-        int ans = 0;
-        for (Pos next : list) {
-            if (find(next.u) != find(next.v)) {
-                union(next.u, next.v);
-                ans += next.w;
+        int sum = 0;
+        while (!pq.isEmpty()) {
+            Pos now = pq.poll();
+
+            if (find(now.a) != find(now.b)) {
+                union(now.a, now.b);
+                sum += now.c;
             }
         }
-
-        System.out.println(ans);
+        System.out.println(sum);
     }
 
-    private static void union(int u, int v) {
-        u = find(u);
-        v = find(v);
+    private static void union(int a, int b) {
+        a = find(a); b = find(b);
 
-        if (u != v) {
-            if (u > v) parent[u] = v;
-            else parent[v] = u;
+        if (a != b) {
+            if (a < b) parents[b] = a;
+            else parents[a] = b;
         }
     }
 
     private static int find(int x) {
-        if (parent[x] == x) return x;
-        return parent[x] = find(parent[x]);
+        if (parents[x] == x) return x;
+        return parents[x] = find(parents[x]);
     }
 }
