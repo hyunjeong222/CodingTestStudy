@@ -4,8 +4,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
+    static int m, n;
     static int[] parent;
-    static ArrayList<Node> list;
     static class Node implements Comparable<Node> {
         int to; int from;
         int value;
@@ -23,15 +23,16 @@ public class Main {
         StringBuilder sb  = new StringBuilder();
 
         StringTokenizer st;
+        ArrayList<Node> list;
         while (true) {
             st = new StringTokenizer(br.readLine());
-            int m = Integer.parseInt(st.nextToken()); // 집의 수
-            int n = Integer.parseInt(st.nextToken()); // 길의 수
+            m = Integer.parseInt(st.nextToken()); // 집의 수
+            n = Integer.parseInt(st.nextToken()); // 길의 수
 
             if (m == 0 && n == 0) break;
 
-            parent = new int[m];
-            for (int i = 0; i < m; i++) {
+            parent = new int[m+1];
+            for (int i = 0; i <= m; i++) {
                 parent[i] = i;
             }
 
