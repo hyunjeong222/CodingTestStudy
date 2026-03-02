@@ -6,7 +6,6 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        // StringBuilder sb  = new StringBuilder();
         StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(st.nextToken()); // 학생 수
         int k = Integer.parseInt(st.nextToken()); // 반 등수의 차이
@@ -18,9 +17,9 @@ public class Main {
 
         long ans = 0;
         for (int i = 0; i < n; i++) {
-            String name = br.readLine();
-            int len = name.length();
+            int len = br.readLine().length();
 
+            // 현재 학생 i와 친구가 될 수 없는 학생들을 제거
             while (!que[len].isEmpty() && que[len].peek() < i-k) {
                 que[len].poll();
             }
