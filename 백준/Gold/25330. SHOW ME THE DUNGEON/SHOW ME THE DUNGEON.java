@@ -9,7 +9,6 @@ public class Main {
     static int ans = 0;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        // StringBuilder sb = new StringBuilder();
 
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken()); // 몬스터 수
@@ -27,8 +26,8 @@ public class Main {
             people[i] = Integer.parseInt(st.nextToken());
         }
 
-        size = 1<<n;
-        dp = new int[size];
+        size = (1<<n)-1;
+        dp = new int[size+1];
         Arrays.fill(dp, -1);
 
         dfs(k, 0, 0, 0);
@@ -38,22 +37,27 @@ public class Main {
         br.close();
     }
 
+    // 현재 남은 체력, 지금까지 구한 주민 수, 지금까지 누적된 공격력, 방문한 마을
     private static void dfs(int hp, int save, int damage, int checked) {
         ans = Math.max(ans, save); // 최대 구한 주민
 
-        // 모든 마을을 방문 || 누적된 공격량이 내 체력보다 많은 경우
+        // 모든 마을을 방문 || 다음 공격 못버팀
         if (checked == size || hp <= damage) return;
 
         for (int i = 0; i < n; i++) {
-            int bit = (1<<i);
+            int bit = (1<<i); // 방문 안 한 마을 선택
+            
             // 이미 방문
-            if ((checked&bit) > 0) continue;
+            if ((checked & bit) > 0) continue;
+            
             // 해당 마을 방문 정보
             int totalDamage = damage+attack[i];
             int nextHp = hp-totalDamage;
             int nextChecked = checked | bit;
-            // 몬스터를 물리치지 못하거나 || 메모이제이션 최댓값 X
+            
+            // 체력 부족 || 메모이제이션 최댓값 X - 이미 더 좋은 상태
             if (nextHp < 0 || dp[nextChecked] >= nextHp) continue;
+            
             // 다음 마을 방문 진행
             dp[nextChecked] = nextHp;
             dfs(nextHp, save+people[i], totalDamage, nextChecked);
