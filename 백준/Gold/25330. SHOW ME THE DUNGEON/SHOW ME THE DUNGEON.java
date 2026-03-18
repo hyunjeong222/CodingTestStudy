@@ -27,8 +27,8 @@ public class Main {
             people[i] = Integer.parseInt(st.nextToken());
         }
 
-        size = (1<<n)-1;
-        dp = new int[size+1];
+        size = 1<<n;
+        dp = new int[size];
         Arrays.fill(dp, -1);
 
         dfs(k, 0, 0, 0);
