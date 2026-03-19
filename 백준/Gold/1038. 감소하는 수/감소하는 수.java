@@ -15,7 +15,7 @@ public class Main {
         if (n <= 10) {
             System.out.println(n);
             return;
-        } else if (n >= 1023) {
+        } else if (n >= 1023) { // 감소하는 수는 최대 1023개
             System.out.println(-1);
             return;
         }
@@ -24,6 +24,7 @@ public class Main {
             dfs(i);
         }
         Collections.sort(list);
+        // System.out.println(list);
 
         System.out.println(list.get(n));
 
@@ -32,10 +33,11 @@ public class Main {
 
     private static void dfs(long num) {
         list.add(num);
-
-        long modValue = num%10;
+        
+        long modValue = num%10; // 현재 숫자의 끝자리
         if (modValue == 0) return;
 
+        // 다음 숫자 만들기
         for (long i = modValue-1; i >= 0; i--) {
             long newValue = num*10+i;
             dfs(newValue);
