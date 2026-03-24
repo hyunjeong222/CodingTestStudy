@@ -7,7 +7,6 @@ public class Main {
     static final int N = 5;
     static int x, y;
     static int[] weight;
-    static boolean[] checked;
     static boolean flag;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,8 +27,6 @@ public class Main {
                 weight[i] = Integer.parseInt(st.nextToken());
             }
 
-            checked = new boolean[N];
-
             flag = false;
             dfs(0, 0);
 
@@ -42,15 +39,13 @@ public class Main {
     }
 
     private static void dfs(int idx, int sum) {
-        if (flag) return;
+        if (idx == N) {
+            if (sum >= x && sum <= y) {
+                flag = true;
+            }
 
-        if (sum >= x && sum <= y) {
-            flag = true;
             return;
         }
-
-        if (idx == N) return;
-
 
         dfs(idx+1, sum+weight[idx]);
         dfs(idx+1, sum);
