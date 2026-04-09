@@ -6,12 +6,11 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
 
         int n = Integer.parseInt(br.readLine()); // 컴퓨터 개수
 
-        ArrayList<Integer>[] rank = new ArrayList[n + 2];
-        for (int i = 0; i < n + 2; i++) {
+        ArrayList<Integer>[] rank = new ArrayList[n+2];
+        for (int i = 0; i < n+2; i++) {
             rank[i] = new ArrayList<>();
         }
         int[] speed = new int[n+1]; // 수행 시간
@@ -33,13 +32,11 @@ public class Main {
                 dp[j] += speed[j];
 
                 for (int k : rank[i+1]) {
-                    // 컴퓨터 간의 전송 시간은 (i - j)2
-                    int transfer = (k - j) * (k - j);
-                    if (dp[k] < dp[j] + transfer) {
-                        dp[k] = dp[j] + transfer;
+                    int transfer = (k-j) * (k-j);
+                    if (dp[k] < dp[j]+transfer) {
+                        dp[k] = dp[j]+transfer;
                     }
                 }
-
                 if (dp[j] > ans) {
                     ans = dp[j];
                 }
