@@ -9,21 +9,22 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        // StringTokenizer st = new StringTokenizer(br.readLine());
         int n = Integer.parseInt(br.readLine()); // 인식할 수 있는 알파벳 개수
         String str = br.readLine();
 
-        int left = 0, right = 0;
-        int cnt = 1, ans = 0;
-        alphabet[str.charAt(0)-'a']++;
-        while (right < str.length()-1) {
-            if (alphabet[str.charAt(++right)-'a']++ == 0) cnt++;
+        int start = 0, end = 0;
+        int cnt = 1, ans = 0; // 현재 알파벳 개수
+        alphabet[str.charAt(0)-'a']++; // 첫번째 문자
+        while (end < str.length()-1) {
+            if (alphabet[str.charAt(++end)-'a']++ == 0) cnt++;
 
-            while (n < cnt && left < right) {
-                if (--alphabet[str.charAt(left++)-'a'] == 0) cnt--;
+            // 알파벳 종류가 n개 초과
+            while (n < cnt && start < end) {
+                if (--alphabet[str.charAt(start++)-'a'] == 0) cnt--;
             }
 
-            ans = Math.max(ans, right-left+1);
+            // 최대 길이 갱신
+            ans = Math.max(ans, end-start+1);
         }
 
         System.out.println(ans);
