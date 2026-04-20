@@ -6,7 +6,7 @@ import java.util.*;
 public class Main {
     static int n, h;
     static List<Integer>[] graph;
-    static int[][] parent; // dp[now][h] : 해당 now 노드의 2^h번째 부모 노드를 저장
+    static int[][] parent; // parent[node][i] : node의 2^i번째 부모
     static int[] depth; // 깊이
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -27,7 +27,6 @@ public class Main {
             graph[a].add(b);
             graph[b].add(a);
         }
-
 
         h = getTreeHeight();
         parent = new int[n+1][h];
@@ -50,32 +49,9 @@ public class Main {
         br.close();
     }
 
-    private static int LCA(int a, int b) {
-        int ah = depth[a];
-        int bh = depth[b];
-
-        if (ah < bh) {
-            int tmp = a;
-            a = b;
-            b = tmp;
-        }
-
-        for (int i = h-1; i >= 0; i--) {
-            if ((1 << i) <= depth[a]-depth[b]) {
-                a = parent[a][i];
-            }
-        }
-
-        if (a == b) return a;
-
-        for (int i = h-1; i >= 0; i--) {
-            if (parent[a][i] != parent[b][i]) {
-                a = parent[a][i];
-                b = parent[b][i];
-            }
-        }
-
-        return parent[a][0];
+    private static int getTreeHeight() {
+        // ceil(log₂(n)) + 1
+        return (int)Math.ceil(Math.log(n)/Math.log(2))+1;
     }
 
     private static void dfs(int now, int h, int par) {
@@ -83,7 +59,8 @@ public class Main {
         for (int next : graph[now]) {
             if (next != par) {
                 dfs(next, h+1, now);
-                parent[next][0] = now; // next의 부모 now
+                // 2^0 = 1칸 위 부모 : next의 바로 위 부모는 now
+                parent[next][0] = now;
             }
         }
     }
@@ -96,8 +73,35 @@ public class Main {
         }
     }
 
-    private static int getTreeHeight() {
-        // ceil(log₂(n)) + 1
-        return (int)Math.ceil(Math.log(n)/Math.log(2))+1;
+    private static int LCA(int a, int b) {
+        int ah = depth[a];
+        int bh = depth[b];
+
+        // 항상 a를 더 깊게
+        if (ah < bh) {
+            int tmp = a;
+            a = b;
+            b = tmp;
+        }
+
+        // a를 위로 끌어올려서 b랑 같은 깊이로 맞추기
+        for (int i = h-1; i >= 0; i--) {
+            if ((1 << i) <= depth[a]-depth[b]) {
+                a = parent[a][i];
+            }
+        }
+
+        if (a == b) return a;
+
+        // LCA 찾기
+        // 둘을 같이 움직이면서 부모가 같아지기 직전까지 올림
+        for (int i = h-1; i >= 0; i--) {
+            if (parent[a][i] != parent[b][i]) {
+                a = parent[a][i];
+                b = parent[b][i];
+            }
+        }
+
+        return parent[a][0];
     }
 }
