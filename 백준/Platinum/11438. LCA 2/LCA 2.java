@@ -61,7 +61,7 @@ public class Main {
         }
 
         for (int i = h-1; i >= 0; i--) {
-            if (Math.pow(2, i) <= depth[a]-depth[b]) {
+            if ((1 << i) <= depth[a]-depth[b]) {
                 a = parent[a][i];
             }
         }
