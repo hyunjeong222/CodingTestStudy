@@ -1,68 +1,71 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     static int v, e;
-    static int[] parents;
-    static PriorityQueue<Pos> pq;
-    static public class Pos implements Comparable<Pos> {
-        int a; int b; int c;
-        public Pos(int a, int b, int c) {
-            this.a = a; this.b = b; this.c = c;
+    static ArrayList<ArrayList<Node>> list;
+    static boolean[] checked;
+    static class Node implements Comparable<Node> {
+        int to; int value;
+        public Node(int to, int value) {
+            this.to = to; this.value = value;
         }
         @Override
-        public int compareTo(Pos o) {
-            return this.c - o.c;
+        public int compareTo(Node o) {
+            return this.value - o.value;
         }
     }
+    static int ans = 0;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb  = new StringBuilder();
+
         StringTokenizer st = new StringTokenizer(br.readLine());
-        v = Integer.parseInt(st.nextToken());
-        e = Integer.parseInt(st.nextToken());
-        parents = new int[v+1];
-        for (int i = 1; i <= v; i++) {
-            parents[i] = i;
+        v = Integer.parseInt(st.nextToken()); // 정점의 개수
+        e = Integer.parseInt(st.nextToken()); // 간선의 개수
+
+        list = new ArrayList<>();
+        checked = new boolean[v+1];
+        for (int i = 0; i <= v; i++) {
+            list.add(new ArrayList<>());
         }
-        
-        pq = new PriorityQueue<>();
-        
+
         int a, b, c;
-        while (e --> 0) {
+        for (int i = 0; i < e; i++) {
             st = new StringTokenizer(br.readLine());
             a = Integer.parseInt(st.nextToken());
             b = Integer.parseInt(st.nextToken());
             c = Integer.parseInt(st.nextToken());
 
-            pq.offer(new Pos(a, b, c));
+            list.get(a).add(new Node(b, c));
+            list.get(b).add(new Node(a, c));
         }
 
-        int sum = 0;
-        while (!pq.isEmpty()) {
-            Pos now = pq.poll();
+        prim(1);
 
-            if (find(now.a) != find(now.b)) {
-                union(now.a, now.b);
-                sum += now.c;
+        System.out.println(ans);
+
+        br.close();
+    }
+
+    private static void prim(int start) {
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.offer(new Node(start, 0));
+
+        while (!pq.isEmpty()) {
+            Node now = pq.poll();
+            int node = now.to;
+            int value = now.value;
+
+            if (checked[node]) continue;
+            checked[node] = true;
+            ans += value;
+
+            for (Node next : list.get(node)) {
+                if (!checked[next.to]) pq.offer(next);
             }
         }
-        System.out.println(sum);
-    }
-
-    private static void union(int a, int b) {
-        a = find(a); b = find(b);
-
-        if (a != b) {
-            if (a < b) parents[b] = a;
-            else parents[a] = b;
-        }
-    }
-
-    private static int find(int x) {
-        if (parents[x] == x) return x;
-        return parents[x] = find(parents[x]);
     }
 }
